@@ -13,8 +13,8 @@ const TablaVisitasMedicas = ({ visitasMedicas, onConfirm, onRefuse }) => (
             </tr>
         </thead>
         <tbody>
-            {visitasMedicas.map(e => (
-                <tr>
+            {visitasMedicas.map((e, i) => (
+                <tr key={i}>
                     <th scope="row">{e.id}</th>
                     <td>{e.fechaRealizacionFormateada}</td>
                     <td>{e.id}</td>

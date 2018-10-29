@@ -3,7 +3,7 @@ import { Breadcrumb, BreadcrumbItem, Container, Col, Row, Button } from 'reactst
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Menu from '../../components/Menu';
-import { hasProfile, profileList, notProfile } from '../../common/utils';
+import { hasProfile, profileList } from '../../common/utils';
 
 const Home = () => (
     <div>

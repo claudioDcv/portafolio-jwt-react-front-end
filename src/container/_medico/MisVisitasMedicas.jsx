@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Button, ButtonGroup, Row, Col, Breadcrumb, BreadcrumbItem, Container, TabContent, TabPane, Nav, NavItem, NavLink, Card, CardTitle, CardText } from 'reactstrap';
+import { Button, ButtonGroup, Row, Col, Breadcrumb, BreadcrumbItem,
+    Container, TabContent, TabPane, Nav, NavItem, NavLink,
+} from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import "react-table/react-table.css";

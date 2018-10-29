@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Button, ButtonGroup, Row, Col, Breadcrumb, BreadcrumbItem, Container, TabContent, TabPane, Nav, NavItem, NavLink, Card, CardTitle, CardText } from 'reactstrap';
+import { Button, ButtonGroup, Row, Col,
+    Breadcrumb, BreadcrumbItem, Container,
+} from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import "react-table/react-table.css";
@@ -10,29 +12,41 @@ import Menu from '../../components/Menu';
 import Loading from '../../components/Loading';
 
 import EmpresasService from '../../http/service/EmpresaService';
-import VisitaMedicaService from '../../http/service/VisitaMedicaService';
+import CapacitacionService from '../../http/service/CapacitacionService';
 
 import EmpresaCard from '../../components/EmpresaCard';
-import TablaVisitasMedicas from '../../components/TablaVisitasMedicas';
+import TablaCapacitaciones from '../../components/TablaCapacitaciones';
 
-class MisCharlas extends Component {
+class MisVisitasMedicas extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             empresa: {},
+            capacitaciones: [],
         };
+        this.handlerEnter = this.handlerEnter.bind(this);
     }
 
     componentDidMount() {
         const { id } = this.props.match.params;
         EmpresasService.findById(id).then(empresa => {
-            this.setState({ empresa });
+            CapacitacionService.findByEmpresaId(empresa.id).then(capacitaciones => {
+                this.setState({
+                    empresa,
+                    capacitaciones,
+                });
+            });
+
         });
     }
 
+    handlerEnter(id) {
+        alert(id);
+    }
+
     render() {
-        const { empresa, visitasMedicas } = this.state;
+        const { empresa, capacitaciones } = this.state;
         return empresa ? (
             <div>
                 <Menu />
@@ -67,7 +81,7 @@ class MisCharlas extends Component {
                 <Container>
                     <Row>
                         <Col md="12">
-                            a
+                            <TablaCapacitaciones capacitaciones={capacitaciones} onEnter={this.handlerEnter} />
                         </Col>
                     </Row>
                 </Container>
@@ -76,4 +90,4 @@ class MisCharlas extends Component {
     }
 }
 
-export default MisCharlas;
+export default MisVisitasMedicas;
