@@ -40,6 +40,23 @@ class Service {
         });
     }
 
+    static get(endpoint) {
+        return new Promise((resolve, reject, authenticated = true) => {
+            fetch(`${apiHost}${endpoint}`, {
+                method: 'GET', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...getHeadToken(authenticated),
+                },
+            })
+                .then((resp) => resp.json())
+                .then((data) => responseControl(data, resolve, reject))
+                .catch((reason) => {
+                    reject(reason);
+                });
+        });
+    }
+
     static findById(endpoint, id, authenticated = true) {
         return new Promise((resolve, reject) => {
 

@@ -3,6 +3,7 @@ import { Breadcrumb, BreadcrumbItem, Container, Col, Row, Button } from 'reactst
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Menu from '../../components/Menu';
+import { hasProfile, profileList, notProfile } from '../../common/utils';
 
 const Home = () => (
     <div>
@@ -19,11 +20,16 @@ const Home = () => (
                     <h2>Home</h2>
                 </Col>
                 <Col md="12">
-                    <Link to="/usuarios">
+                    {hasProfile(profileList.SAFE_ADMIN_SUPERVISOR) && (<Link to="/usuarios">
                         <Button size="lg" color="primary">
                             <FontAwesomeIcon icon="users" /> Usuarios
                         </Button>
-                    </Link>
+                    </Link>)}
+                    {hasProfile(profileList.SAFE) && (<Link to="/home/empresas" className="ml-2">
+                        <Button size="lg" color="primary">
+                            <FontAwesomeIcon icon="building" /> Empresas
+                        </Button>
+                    </Link>)}
                 </Col>
             </Row>
         </Container>

@@ -7,6 +7,12 @@ import UsersCreate from './users/Create';
 
 import ProfilesList from './profiles/List';
 
+import ListadoEmpresa from './_comun/ListadoEmpresa';
+import DetalleEmpresa from './_comun/DetalleEmpresa';
+
+import MisVisitasMedicas from './_medico/MisVisitasMedicas';
+import MisCharlas from './_examinador/MisCharlas';
+
 import Login from "./auth/Login";
 import Home from './home/Home';
 
@@ -23,6 +29,11 @@ class Main extends Component {
           <PrivateRoute path="/usuarios/detalle/:id" component={UserSingle} />
 
           <PrivateRoute exact path="/perfiles" component={ProfilesList} />
+
+          <PrivateRoute exact path="/home/empresas" component={ListadoEmpresa} />
+          <PrivateRoute exact path="/home/empresas/:id" component={DetalleEmpresa} />
+          <PrivateRoute exact path="/home/empresas/:id/medico" component={MisVisitasMedicas} />
+          <PrivateRoute exact path="/home/empresas/:id/examinador" component={MisCharlas} />
         </div>
       </Router>);
   }

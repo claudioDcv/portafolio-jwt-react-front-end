@@ -5,41 +5,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Menu from '../../components/Menu';
 
-import UserService from '../../http/service/UserService';
-import { email } from '../../config/const';
+import EmpresasService from '../../http/service/EmpresaService';
+import { hasProfile, profileList } from '../../common/utils';
 
-class List extends Component {
+class ListadoEmpresa extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            users: [],
+            empresas: [],
         };
     }
 
     componentDidMount() {
-        UserService.findAll().then(data => this.setState({
-            users: data.filter(e => e.email !== email()),
-        }));
-    }
-
-    handlerOnDelete(id) {
-        return () => {
-            // eslint-disable-next-line
-            const result = confirm('¿Esta seguro que desea eliminar este elemento?');
-            if (result) {
-                UserService.delete(id).then(data => {
-                    alert(`Eliminado con exito: ${data}`);
-                    UserService.findAll().then(data => this.setState({
-                        users: data.filter(e => e.email !== email()),
-                    }));
-                });
-            }
-        }
+        EmpresasService.findAll().then(e => this.setState({ empresas: e }));
     }
 
     render() {
-        const { users } = this.state;
+        const { empresas } = this.state;
         return (
             <div>
                 <Menu />
@@ -48,16 +31,18 @@ class List extends Component {
                         <Col>
                             <Breadcrumb>
                                 <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
-                                <BreadcrumbItem active>Usuarios</BreadcrumbItem>
+                                <BreadcrumbItem active>Empresas</BreadcrumbItem>
                             </Breadcrumb>
                             <Card>
                                 <CardHeader>
-                                    <CardTitle>Listado de Usuarios</CardTitle>
-                                    <Link to="/usuarios/registrar">
-                                        <Button color="primary">
-                                            Registrar Usuario
-                                        </Button>
-                                    </Link>
+                                    <CardTitle><FontAwesomeIcon icon="building" /> Listado de Usuarios</CardTitle>
+                                    {hasProfile([profileList.ADMIN_SAFE]) && (
+                                        <Link to="/usuarios/registrar">
+                                            <Button color="primary">
+                                                Registrar Empresa
+                                            </Button>
+                                        </Link>)
+                                    }
                                 </CardHeader>
                                 <CardBody>
                                     <Table size="sm" striped hover responsive>
@@ -66,32 +51,28 @@ class List extends Component {
                                                 <th>#</th>
                                                 <th>Nombre</th>
                                                 <th>Email</th>
+                                                <th>Teléfono</th>
+                                                <th>Dirección</th>
                                                 <th>Acción</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {users.map(e => (
+                                            {empresas.map(e => (
                                                 <tr key={e.id}>
                                                     <th scope="row">
-                                                        <Link to={`/usuarios/detalle/${e.id}`}>
+                                                        <Link to={`/home/empresas/${e.id}`}>
                                                             <Button color="link" size="sm">{e.id}</Button>
                                                         </Link></th>
-                                                    <td>{e.name}</td>
+                                                    <td>{e.nombre}</td>
                                                     <td>{e.email}</td>
+                                                    <td>{e.telefono}</td>
+                                                    <td>{e.direccion}</td>
                                                     <td>
-                                                        <Link to={`/usuarios/detalle/${e.id}`}>
+                                                        <Link to={`/home/empresas/${e.id}`}>
                                                             <Button color="primary" size="sm" outline>
                                                                 <FontAwesomeIcon icon="eye" />
                                                             </Button>
-                                                        </Link>{' '}
-                                                        <Button
-                                                            onClick={this.handlerOnDelete(e.id)}
-                                                            color="danger"
-                                                            size="sm"
-                                                            outline 
-                                                        >
-                                                            <FontAwesomeIcon icon="trash" />
-                                                        </Button>
+                                                        </Link>
                                                     </td>
                                                 </tr>
                                             ))}
@@ -108,4 +89,5 @@ class List extends Component {
     }
 }
 
-export default List;
+
+export default ListadoEmpresa;

@@ -18,7 +18,18 @@ class UserService {
         return new Promise((resolve, reject) => {
             Service.findById(endpoint, id).then((data) => {
                 const d = data;
-                d.obj.profiles = data.obj.profiles.map(e => new Profile(e));
+                d.obj.profiles = data.obj.profiles ? data.obj.profiles.map(e => new Profile(e)) : [];
+                const obj = new User(d.obj);
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
+
+    static getProfile() {
+        return new Promise((resolve, reject) => {
+            Service.get(`${endpoint}/profile`).then((data) => {
+                const d = data;
+                d.obj.profiles = data.obj.profiles ? data.obj.profiles.map(e => new Profile(e)) : [];
                 const obj = new User(d.obj);
                 resolve(obj);
             }).catch((reason) => reject(reason));

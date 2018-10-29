@@ -31,3 +31,17 @@ nav.navbar {
   display: block;
   padding: 0.5rem 1rem;
 }
+
+.display-data {
+  display: block;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333333;
+  background-color: #f8f9fa;
+  background-clip: padding-box;
+  border: 1px solid #f8f9fa;
+  border-radius: 0.25rem;
+}

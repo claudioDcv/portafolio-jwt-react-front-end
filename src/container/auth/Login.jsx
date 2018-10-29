@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Logo from '../../components/Logo';
 
 import AuthService from '../../http/service/AuthService';
+import UserService from '../../http/service/UserService';
 
 class Login extends Component {
 
@@ -40,7 +41,11 @@ class Login extends Component {
         AuthService.login({ email, password }).then(data => {
             if (data.token) {
                 window.localStorage.setItem('token', data.token);
-                this.props.history.push('/home')
+                UserService.getProfile().then(data => {
+                    window.localStorage.setItem('profile', JSON.stringify(data));
+                    this.props.history.push('/home')
+                })
+
             } else {
                 this.setState({ visible: true, failedMessage: data.message });
             }

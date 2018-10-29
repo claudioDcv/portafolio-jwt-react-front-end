@@ -10,6 +10,11 @@ import {
   faUsers,
   faShieldAlt,
   faAt,
+  faBuilding,
+  faGraduationCap,
+  faNotesMedical,
+  faFileAlt,
+  faArrowLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -18,7 +23,14 @@ import './App.css';
 import Master from './container/Main';
 
 const icons = [
-  faGhost, faSignOutAlt, faKey, faUser, faTrash, faEye, faUsers, faShieldAlt, faAt,
+  faGhost,
+  faSignOutAlt,
+  faKey, faUser, faTrash, faEye, faUsers, faShieldAlt, faAt,
+  faBuilding,
+  faGraduationCap,
+  faNotesMedical,
+  faFileAlt,
+  faArrowLeft,
 ];
 
 library.add(icons);

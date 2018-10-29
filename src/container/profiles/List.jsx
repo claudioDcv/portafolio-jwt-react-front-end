@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Table, Card, CardBody, Breadcrumb, BreadcrumbItem, Container, Col, Row, CardHeader, CardTitle } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import Menu from '../../components/Menu';
 
