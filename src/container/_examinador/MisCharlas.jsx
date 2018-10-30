@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Button, ButtonGroup, Row, Col,
+import {
+    Button, ButtonGroup, Row, Col,
     Breadcrumb, BreadcrumbItem, Container,
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -63,25 +64,16 @@ class MisVisitasMedicas extends Component {
                                 <BreadcrumbItem>
                                     <Link to={`/home/empresas/${empresa.id}`}>{empresa.nombre}</Link>
                                 </BreadcrumbItem>
-                                <BreadcrumbItem active>Charlas</BreadcrumbItem>
+                                <BreadcrumbItem active>Capacitaciones</BreadcrumbItem>
                             </Breadcrumb>
-                            <EmpresaCard empresa={empresa} />
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md="12 mt-4 mb-4">
-                            <ButtonGroup>
-                                <Link to={`/home/empresas/${empresa.id}`}>
-                                    <Button><FontAwesomeIcon icon="arrow-left" /> Volver</Button>
-                                </Link>
-                            </ButtonGroup>
+                            <EmpresaCard empresa={empresa} link={`/home/empresas/${empresa.id}`} />
                         </Col>
                     </Row>
                 </Container>
                 <Container>
                     <Row>
                         <Col md="12">
-                            <TablaCapacitaciones capacitaciones={capacitaciones} onEnter={this.handlerEnter} />
+                            <TablaCapacitaciones capacitaciones={capacitaciones} empresaId={empresa.id} />
                         </Col>
                     </Row>
                 </Container>

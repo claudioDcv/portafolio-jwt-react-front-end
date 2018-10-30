@@ -1,8 +1,8 @@
 import React from 'react';
 import { Table, Button } from 'reactstrap';
-import { isFunction } from '../common/utils';
+import { Link } from 'react-router-dom';
 
-const TablaCapacitaciones = ({ capacitaciones, onEnter }) => (
+const TablaCapacitaciones = ({ capacitaciones, empresaId }) => (
     <Table>
         <thead>
             <tr>
@@ -21,8 +21,10 @@ const TablaCapacitaciones = ({ capacitaciones, onEnter }) => (
                     <td>{e.asistentesMinimos}</td>
                     <td>{e.fechaRealizacionFormateada}</td>
                     <td>
-                        {isFunction(onEnter) && (
-                            <Button color="success" className="mr-2" onClick={() => onEnter(e.id)}>Asistentes</Button>
+                        {empresaId && (
+                            <Link to={`/home/empresas/${empresaId}/examinador/capacitacion/${e.id}`}>
+                                <Button color="success" className="mr-2">Asistentes</Button>
+                            </Link>
                         )}
                     </td>
                 </tr>

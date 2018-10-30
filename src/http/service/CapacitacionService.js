@@ -20,6 +20,16 @@ class CapacitacionService {
             }).catch((reason) => reject(reason));
         });
     }
+
+    static findById(id) {
+        return new Promise((resolve, reject) => {
+            Service.findById(endpoint, id).then((data) => {
+                const d = data;
+                const obj = new Capacitacion(d.obj)
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
 }
 
 export default CapacitacionService;

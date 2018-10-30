@@ -81,16 +81,7 @@ class MisVisitasMedicas extends Component {
                                 </BreadcrumbItem>
                                 <BreadcrumbItem active>Visitas Medicas</BreadcrumbItem>
                             </Breadcrumb>
-                            <EmpresaCard empresa={empresa} />
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md="12 mt-4 mb-4">
-                            <ButtonGroup>
-                                <Link to={`/home/empresas/${empresa.id}`}>
-                                    <Button><FontAwesomeIcon icon="arrow-left" /> Volver</Button>
-                                </Link>
-                            </ButtonGroup>
+                            <EmpresaCard empresa={empresa} link={`/home/empresas/${empresa.id}`} />
                         </Col>
                     </Row>
                 </Container>

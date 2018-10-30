@@ -15,6 +15,7 @@ import {
   faNotesMedical,
   faFileAlt,
   faArrowLeft,
+  faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -31,6 +32,7 @@ const icons = [
   faNotesMedical,
   faFileAlt,
   faArrowLeft,
+  faPlus,
 ];
 
 library.add(icons);

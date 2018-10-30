@@ -1,9 +1,17 @@
 import React from 'react';
-import { Label, Row, Col, Card, CardBody, CardTitle, CardHeader } from 'reactstrap';
+import { Link } from "react-router-dom";
+import { Label, Row, Col, Card, CardBody, CardTitle, CardHeader, Button } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const EmpresaCard = ({ empresa }) => (
+const EmpresaCard = ({ empresa, link }) => (
     <Card>
-        <CardHeader><CardTitle>Empresa</CardTitle></CardHeader>
+        <CardHeader>
+            <CardTitle>
+                {link && (<Link to={link}>
+                    <Button outline><FontAwesomeIcon icon="arrow-left" /></Button>
+                </Link>)} Empresa
+            </CardTitle>
+        </CardHeader>
         <CardBody>
             <Row>
                 <Col md="2">
