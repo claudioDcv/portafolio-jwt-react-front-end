@@ -9,30 +9,20 @@ const EmpresaCard = ({ empresa, link }) => (
             <CardTitle>
                 {link && (<Link to={link}>
                     <Button outline><FontAwesomeIcon icon="arrow-left" /></Button>
-                </Link>)} Empresa
+                </Link>)} ({empresa.id}) {empresa.nombre}
             </CardTitle>
         </CardHeader>
         <CardBody>
             <Row>
-                <Col md="2">
-                    <Label for="exampleEmail">#ID</Label>
-                    <div className="display-data">{empresa.id}</div>
-                </Col>
-                <Col md="5">
-                    <Label for="name">Nombre</Label>
-                    <div className="display-data">{empresa.nombre}</div>
-                </Col>
-                <Col md="5">
+                <Col md="4">
                     <Label for="exampleEmail">Email</Label>
                     <div className="display-data">{empresa.email}</div>
                 </Col>
-            </Row>
-            <Row>
-                <Col md="5">
+                <Col md="4">
                     <Label for="exampleEmail">Teléfono</Label>
                     <div className="display-data">{empresa.telefono}</div>
                 </Col>
-                <Col md="5">
+                <Col md="4">
                     <Label for="exampleEmail">Dirección</Label>
                     <div className="display-data">{empresa.direccion}</div>
                 </Col>

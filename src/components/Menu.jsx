@@ -14,7 +14,7 @@ import {
   DropdownItem,
 } from 'reactstrap';
 
-import SelectProfuleUser from './SelectProfileUser';
+import SelectProfileUser from './SelectProfileUser';
 import { email, profile } from '../config/const';
 import { hasProfile, profileList } from '../common/utils';
 
@@ -39,16 +39,16 @@ class Menu extends Component {
         <NavbarToggler onClick={this.toggle} />
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>
-            <NavItem style={{ minWidth: '200px' }}>
-              <SelectProfuleUser />
+            <NavItem>
+              <SelectProfileUser />
             </NavItem>
             <NavItem>
               <Link to="/home">Home</Link>
             </NavItem>
-            {hasProfile([profileList.ADMIN_SAFE]) && (<NavItem>
+            {hasProfile(profileList.SAFE_ADMIN_SUPERVISOR) && (<NavItem>
               <Link to="/usuarios"><FontAwesomeIcon icon="users" /> Usuarios</Link>
             </NavItem>)}
-            {hasProfile([profileList.ADMIN_SAFE]) && (<NavItem>
+            {hasProfile(profileList.SAFE_ADMIN_SUPERVISOR) && (<NavItem>
               <Link to="/perfiles"><FontAwesomeIcon icon="users" /> Perfiles</Link>
             </NavItem>)}
             <UncontrolledDropdown nav inNavbar>

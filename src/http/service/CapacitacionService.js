@@ -30,6 +30,16 @@ class CapacitacionService {
             }).catch((reason) => reject(reason));
         });
     }
+
+    static asistentesByIdCapacication(id) {
+        return new Promise((resolve, reject) => {
+            Service.findById(`${endpoint}/asistencias`, id).then((data) => {
+                const d = data;
+                const obj = d.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
 }
 
 export default CapacitacionService;
