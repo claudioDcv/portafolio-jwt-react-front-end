@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import {
-  Alert,
   Table,
   CardBody,
   CardHeader,
@@ -16,7 +15,6 @@ import {
   Card,
   Button,
   CardTitle,
-  CardText,
   Row,
   Col
 } from "reactstrap";
@@ -88,7 +86,7 @@ class List extends Component {
                   <CardTitle>Informe</CardTitle>
                   <Row>
                     <Col>
-                      <Link to="/home/empresas/1/tecnicos/nuevo-informe" id="TooltipPerson" className="mr-2">
+                      <Link to="/home/empresas/1/tecnico/nuevo-informe" id="TooltipPerson" className="mr-2">
                         <Button color="primary">
                           <FontAwesomeIcon icon="plus" /> Informe Personas
                         </Button>

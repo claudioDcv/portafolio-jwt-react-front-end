@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import {
-    Button, ButtonGroup, Row, Col,
+    Row, Col,
     Breadcrumb, BreadcrumbItem, Container,
 } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import "react-table/react-table.css";
 

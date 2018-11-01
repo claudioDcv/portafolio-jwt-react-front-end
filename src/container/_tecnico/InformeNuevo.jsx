@@ -10,11 +10,6 @@ import {
   BreadcrumbItem,
   Container,
   Breadcrumb,
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
   Card,
   Button,
   CardTitle,
@@ -23,14 +18,10 @@ import {
   Col
 } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import classnames from "classnames";
 
 import Menu from "../../components/Menu";
 
-import UserService from "../../http/service/UserService";
-import { email } from "../../config/const";
-
-class List extends Component {
+class InformeNuevo extends Component {
   constructor(props) {
     super(props);
 
@@ -38,11 +29,10 @@ class List extends Component {
       items: [],
       value: ""
     };
+
+    this.nextItemId = 0;
     this.handleChange = this.handleChange.bind(this);
   }
-
-  nextItemId = 0;
-
   handleChange(event) {
     this.setState({ value: event.target.value });
   }
@@ -93,11 +83,7 @@ class List extends Component {
                       <Col md={3}>
                         <FormGroup>
                           <Label for="exampleSelect">Empresa</Label>
-                          <Input
-                            type="select"
-                            name="select"
-                            id="exampleSelect"
-                          />
+                          <div className="display-data">Nombre empresa</div>
                         </FormGroup>
                       </Col>
                       <Col md={3}>
@@ -171,4 +157,4 @@ class List extends Component {
   }
 }
 
-export default List;
+export default InformeNuevo;
