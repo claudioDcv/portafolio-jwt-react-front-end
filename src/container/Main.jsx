@@ -15,7 +15,8 @@ import MisCharlas from './_examinador/MisCharlas';
 import DetalleCapacitacion from './_examinador/DetalleCapacitacion';
 
 import TechniciansList from './_tecnico/List';
-import InformeNuevo from './_tecnico/InformeNuevo';
+import InformeNuevoInstalacion from './_tecnico/InformeNuevoInstalacion';
+import InformeNuevoPersona from './_tecnico/InformeNuevoPersona';
 
 import Login from "./auth/Login";
 import Home from './home/Home';
@@ -41,7 +42,8 @@ class Main extends Component {
           <PrivateRoute exact path="/home/empresas/:id/examinador/capacitacion/:idCapacitacion" component={DetalleCapacitacion} />
 
           <PrivateRoute exact path="/home/empresas/:id/tecnico" component={TechniciansList} />
-          <PrivateRoute exact path="/home/empresas/:id/tecnico/nuevo-informe" component={InformeNuevo} />
+          <PrivateRoute exact path="/home/empresas/:id/tecnico/informe-instalacion" component={InformeNuevoInstalacion} />
+          <PrivateRoute exact path="/home/empresas/:id/tecnico/informe-persona" component={InformeNuevoPersona} />
         </div>
       </Router>);
   }

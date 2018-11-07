@@ -18,6 +18,7 @@ import {
   faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.css';
+import "react-datepicker/dist/react-datepicker.css";
 
 import './App.css';
 

@@ -13,6 +13,15 @@ class UserService {
             }).catch((reason) => reject(reason));
         });
     }
+
+    static findAllByProfileId(id) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${endpoint}/perfiles/${id}`).then((data) => {
+                const obj = data.obj.map(e => new User(e));
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
     
     static findById(id) {
         return new Promise((resolve, reject) => {

@@ -8,6 +8,15 @@ export const getProfiles = () => {
     return null;
 };
 
+export const getUser = () => {
+    const profile = window.localStorage.getItem('profile');
+    if (profile) {
+        return JSON.parse(profile);
+    }
+    return null;
+};
+
+
 export const parseJwt = (token) => {
     if (token === 'false') return false;
 
@@ -48,6 +57,7 @@ export const profileList = {
     SUPERVISOR: 'SUPERVISOR',
     SAFE: ['ADMIN_SAFE','TECNICO','PREVENCIONISTA','EXAMINADOR','MEDICO','SUPERVISOR'],
     SAFE_ADMIN_SUPERVISOR: ['ADMIN_SAFE','SUPERVISOR'],
+    SUPERVISOR_ID: 7,
 };
 
 export const fechaFormateada = (date) => {

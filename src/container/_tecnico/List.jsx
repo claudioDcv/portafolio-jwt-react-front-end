@@ -86,12 +86,12 @@ class List extends Component {
                   <CardTitle>Informe</CardTitle>
                   <Row>
                     <Col>
-                      <Link to="/home/empresas/1/tecnico/nuevo-informe" id="TooltipPerson" className="mr-2">
+                      <Link to="/home/empresas/1/tecnico/informe-persona" className="mr-2">
                         <Button color="primary">
                           <FontAwesomeIcon icon="plus" /> Informe Personas
                         </Button>
                       </Link>
-                      <Link to="/home/empresas/1/tecnicos/nuevo-informe" id="TooltipInstall">
+                      <Link to="/home/empresas/1/tecnico/informe-instalacion" id="TooltipInstall">
                         <Button color="primary">
                           <FontAwesomeIcon icon="plus" /> Informe instalación
                         </Button>
