@@ -1,5 +1,4 @@
 import Service from './Service';
-import Profile from '../../entity/Profile';
 
 const endpoint = '/api/informes';
 
@@ -26,6 +25,15 @@ class InformeService {
     static informeInstalacionByID(id) {
         return new Promise((resolve, reject) => {
             Service.get(`${endpoint}/instalacion/${id}`).then((data) => {
+                const obj = data.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
+
+    static observacionByInformeId(id) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${endpoint}/observaciones/informe-detalle/${id}`).then((data) => {
                 const obj = data.obj;
                 resolve(obj);
             }).catch((reason) => reject(reason));

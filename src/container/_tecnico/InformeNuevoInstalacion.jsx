@@ -13,7 +13,9 @@ import {
   Row,
   Col,
   Button,
-  Input
+  Input,
+  Table,
+  CardBody
 } from "reactstrap";
 import Select from 'react-select';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,7 +35,7 @@ class InformeNuevo extends Component {
     super(props);
 
     this.state = {
-      
+
       id: null,
       nombre: '',
 
@@ -46,6 +48,8 @@ class InformeNuevo extends Component {
       instalacionSeleccionado: null,
 
       fechaRealizacion: moment(),
+
+      observaciones: [],
 
     };
 
@@ -73,12 +77,15 @@ class InformeNuevo extends Component {
           }, () => {
             if (informeId) {
               InformeService.informeInstalacionByID(informeId).then(informe => {
-                this.setState({
-                  id: informe.id,
-                  nombre: informe.nombre,
-                  supervisorSeleccionado: { value: informe.supervisor.id, label: informe.supervisor.name },
-                  instalacionSeleccionado: { value: informe.instalacion.id, label: informe.instalacion.nombre },
-                  fechaRealizacion: moment(informe.fechaRealizacion),
+                InformeService.observacionByInformeId(informeId).then(observaciones => {
+                  this.setState({
+                    observaciones,
+                    id: informe.id,
+                    nombre: informe.nombre,
+                    supervisorSeleccionado: { value: informe.supervisor.id, label: informe.supervisor.name },
+                    instalacionSeleccionado: { value: informe.instalacion.id, label: informe.instalacion.nombre },
+                    fechaRealizacion: moment(informe.fechaRealizacion),
+                  });
                 });
               }).catch(e => this.props.history.push(`/home/empresas/${empresa.id}/tecnico/informe-instalacion`));
             }
@@ -120,7 +127,7 @@ class InformeNuevo extends Component {
   }
 
   render() {
-    const { nombre, supervisores, instalaciones, instalacionSeleccionado, empresa, supervisorSeleccionado, fechaRealizacion, id } = this.state;
+    const { observaciones, nombre, supervisores, instalaciones, instalacionSeleccionado, empresa, supervisorSeleccionado, fechaRealizacion, id } = this.state;
     return (
       <div>
         <Menu />
@@ -187,12 +194,35 @@ class InformeNuevo extends Component {
                       </Col>
                       <Col md="3">
                         <Button color="primary" className="button-form" block disabled={this.disabled()}>
-                          <FontAwesomeIcon icon="plus" /> Crear
+                          <FontAwesomeIcon icon="plus" /> {id ? 'Guardar' : 'Crear'}
                         </Button>
                       </Col>
                     </Row>
                   </Form>
                 </CardHeader>
+              </Card>
+            </Col>
+
+            <Col md="12">
+              <Card className="mt-4">
+                <CardHeader>Observaciones</CardHeader>
+                <CardBody>
+                  {id && (<Button color="primary" className="button-form">
+                      <FontAwesomeIcon icon="plus" /> Nueva Observación
+                  </Button>)}
+
+                  {observaciones.length > 0 && (<Table className="mt-4">
+                    <tbody>
+                      {observaciones.map(e => (
+                        <tr key={e.id}>
+                          <td>{e.id}</td>
+                          <td>{e.nombre}</td>
+                          <td className="text-right"><Button color="danger">Eliminar</Button></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>)}
+                </CardBody>
               </Card>
             </Col>
           </Row>
