@@ -63,7 +63,6 @@ class InformeNuevo extends Component {
     EmpresasService.findById(id).then(empresa => {
       UserService.findAllByProfileId(profileList.SUPERVISOR_ID).then(supervisores => {
         TrabajadorService.findAllByEmpresaId(empresa.id).then(trabajadores => {
-
           this.setState({
             empresa,
             supervisores: supervisores.map(e => ({ value: e.id, label: e.name })),
@@ -71,7 +70,6 @@ class InformeNuevo extends Component {
           })
         });
       }
-
       );
     });
   }
@@ -90,7 +88,7 @@ class InformeNuevo extends Component {
       fechaConfirmacion: null,
       confirmacionPrevencionista: 0,
     };
-    InformeService.InformetrabajadorSave(informePersona).then((data) => {
+    InformeService.informeTrabajadorSave(informePersona).then((data) => {
       console.log(data);
     }).catch(e => console.log(e));
   }

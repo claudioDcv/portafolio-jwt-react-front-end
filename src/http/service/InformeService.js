@@ -5,9 +5,27 @@ const endpoint = '/api/informes';
 
 class InformeService {
 
-    static InformetrabajadorSave(data) {
+    static informeTrabajadorSave(data) {
         return new Promise((resolve, reject) => {
             Service.post(`${endpoint}/nuevo-trabajador`, data).then((data) => {
+                const obj = data.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
+
+    static informeInstalacionSave(data) {
+        return new Promise((resolve, reject) => {
+            Service.post(`${endpoint}/nueva-instalacion`, data).then((data) => {
+                const obj = data.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
+
+    static informeInstalacionByID(id) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${endpoint}/instalacion/${id}`).then((data) => {
                 const obj = data.obj;
                 resolve(obj);
             }).catch((reason) => reject(reason));

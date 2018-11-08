@@ -12,16 +12,20 @@ import {
   Label,
   Row,
   Col,
-  Button
+  Button,
+  Input
 } from "reactstrap";
 import Select from 'react-select';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Menu from "../../components/Menu";
+import DatePicker from 'react-datepicker';
+import moment from "moment";
 
-import { profileList } from '../../common/utils';
+import { profileList, getUser } from '../../common/utils';
 import UserService from '../../http/service/UserService';
 import InstalacionService from '../../http/service/InstalacionService';
 import EmpresasService from '../../http/service/EmpresaService';
+import InformeService from '../../http/service/InformeService';
 import EmpresaCard from '../../components/EmpresaCard';
 
 class InformeNuevo extends Component {
@@ -31,16 +35,24 @@ class InformeNuevo extends Component {
     this.state = {
       items: [],
       value: "",
+
+      nombre: '',
+
+      informe: null,
       instalaciones: [],
       supervisores: [],
       empresa: {},
 
       supervisorSeleccionado: null,
-      instalacionSeleccionada: null,
+      instalacionSeleccionado: null,
+
+      fechaRealizacion: moment(),
+
     };
 
     this.nextItemId = 0;
     this.handleChange = this.handleChange.bind(this);
+    this.handlerSubmit = this.handlerSubmit.bind(this);
 
   }
   handleChange(event) {
@@ -49,15 +61,21 @@ class InformeNuevo extends Component {
   }
 
   componentDidMount() {
-    const { id } = this.props.match.params;
+    const { id, informeId } = this.props.match.params;
+
     EmpresasService.findById(id).then(empresa => {
       UserService.findAllByProfileId(profileList.SUPERVISOR_ID).then(supervisores => {
         InstalacionService.findAllByEmpresaId(empresa.id).then(instalaciones => {
 
+          if(informeId) {
+            InformeService.informeInstalacionByID(informeId).then(informe => {
+              console.log(informe);
+            });
+          } 
           this.setState({
             empresa,
             supervisores: supervisores.map(e => ({ value: e.id, label: e.name })),
-            instalaciones: instalaciones.map(e => ({ value: e.id, label: e.nombre })),
+            instalaciones: instalaciones.map(e => ({ value: e.id, label: `${e.nombre}` })),
           })
         });
       }
@@ -66,8 +84,36 @@ class InformeNuevo extends Component {
     });
   }
 
+  handlerSubmit(event) {
+    event.preventDefault();
+    const { fechaRealizacion, supervisorSeleccionado, instalacionSeleccionado, nombre } = this.state;
+    const informePersona = {
+      id: null,
+      prevencionista: null,
+      instalacion: instalacionSeleccionado.value,
+      supervisor: supervisorSeleccionado.value,
+      tecnico: getUser().id,
+      nombre,
+      fechaRealizacion: fechaRealizacion.toJSON(),
+      fechaConfirmacion: null,
+      confirmacionPrevencionista: 0,
+    };
+    InformeService.informeInstalacionSave(informePersona).then((data) => {
+      console.log(data);
+    }).catch(e => console.log(e));
+  }
+
+  disabled() {
+    const { nombre, instalacionSeleccionado, supervisorSeleccionado } = this.state;
+    if (
+      nombre === '' ||
+      instalacionSeleccionado === null ||
+      supervisorSeleccionado === null) return true;
+    return false;
+  }
+
   render() {
-    const { supervisores, instalaciones, instalacionSeleccionada, empresa, supervisorSeleccionado } = this.state;
+    const { nombre, supervisores, instalaciones, instalacionSeleccionado, empresa, supervisorSeleccionado, fechaRealizacion } = this.state;
     return (
       <div>
         <Menu />
@@ -93,20 +139,20 @@ class InformeNuevo extends Component {
               <Card className="mt-4">
                 <CardHeader>
                   <CardTitle>Nuevo Informe | Instalación</CardTitle>
-                  <Form>
+                  <Form onSubmit={this.handlerSubmit}>
                     <Row form>
-                      <Col md={3}>
+                    <Col md={12}>
                         <FormGroup>
-                          <Label for="exampleSelect">Empresa</Label>
-                          <div className="display-data">Nombre empresa</div>
+                          <Label for="exampleSelect">Titulo</Label>
+                          <Input placeholder="Ingrese titulo de informe" name="nombre" value={nombre} onChange={this.handleChange} />
                         </FormGroup>
                       </Col>
                       <Col md={3}>
                         <FormGroup>
-                          <Label for="exampleSelect">Instalacion</Label>
+                          <Label for="exampleSelect">Instalaciones</Label>
                           <Select
-                            value={instalacionSeleccionada}
-                            onChange={(value) => this.handleChange({ target: { value, name: 'instalacionSeleccionada' } })}
+                            value={instalacionSeleccionado}
+                            onChange={(value) => this.handleChange({ target: { value, name: 'instalacionSeleccionado' } })}
                             options={instalaciones}
                           />
                         </FormGroup>
@@ -121,8 +167,19 @@ class InformeNuevo extends Component {
                           />
                         </FormGroup>
                       </Col>
+
+                      <Col md={3}>
+                        <FormGroup>
+                          <Label for="exampleSelect">Fecha Realización</Label>
+                          <DatePicker
+                            selected={fechaRealizacion}
+                            onChange={(value) => this.handleChange({ target: { value, name: 'fechaRealizacion' } })}
+                            locale="es"
+                          />
+                        </FormGroup>
+                      </Col>
                       <Col md="3">
-                        <Button color="primary" className="button-form" block>
+                        <Button color="primary" className="button-form" block disabled={this.disabled()}>
                           <FontAwesomeIcon icon="plus" /> Crear
                         </Button>
                       </Col>
