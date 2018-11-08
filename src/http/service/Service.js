@@ -18,6 +18,7 @@ const responseControl = (data, resolve, reject) => {
             alert(data.message);
             reject(data.message)
         }
+        reject(data.message)
     }
 }
 

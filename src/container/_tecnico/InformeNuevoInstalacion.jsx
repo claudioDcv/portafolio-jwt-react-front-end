@@ -33,9 +33,8 @@ class InformeNuevo extends Component {
     super(props);
 
     this.state = {
-      items: [],
-      value: "",
-
+      
+      id: null,
       nombre: '',
 
       informe: null,
@@ -67,15 +66,22 @@ class InformeNuevo extends Component {
       UserService.findAllByProfileId(profileList.SUPERVISOR_ID).then(supervisores => {
         InstalacionService.findAllByEmpresaId(empresa.id).then(instalaciones => {
 
-          if(informeId) {
-            InformeService.informeInstalacionByID(informeId).then(informe => {
-              console.log(informe);
-            });
-          } 
           this.setState({
             empresa,
             supervisores: supervisores.map(e => ({ value: e.id, label: e.name })),
             instalaciones: instalaciones.map(e => ({ value: e.id, label: `${e.nombre}` })),
+          }, () => {
+            if (informeId) {
+              InformeService.informeInstalacionByID(informeId).then(informe => {
+                this.setState({
+                  id: informe.id,
+                  nombre: informe.nombre,
+                  supervisorSeleccionado: { value: informe.supervisor.id, label: informe.supervisor.name },
+                  instalacionSeleccionado: { value: informe.instalacion.id, label: informe.instalacion.nombre },
+                  fechaRealizacion: moment(informe.fechaRealizacion),
+                });
+              }).catch(e => this.props.history.push(`/home/empresas/${empresa.id}/tecnico/informe-instalacion`));
+            }
           })
         });
       }
@@ -86,7 +92,7 @@ class InformeNuevo extends Component {
 
   handlerSubmit(event) {
     event.preventDefault();
-    const { fechaRealizacion, supervisorSeleccionado, instalacionSeleccionado, nombre } = this.state;
+    const { fechaRealizacion, supervisorSeleccionado, instalacionSeleccionado, nombre, empresa } = this.state;
     const informePersona = {
       id: null,
       prevencionista: null,
@@ -100,6 +106,7 @@ class InformeNuevo extends Component {
     };
     InformeService.informeInstalacionSave(informePersona).then((data) => {
       console.log(data);
+      this.props.history.push(`/home/empresas/${empresa.id}/tecnico/informe-instalacion/${data}`);
     }).catch(e => console.log(e));
   }
 
@@ -113,7 +120,7 @@ class InformeNuevo extends Component {
   }
 
   render() {
-    const { nombre, supervisores, instalaciones, instalacionSeleccionado, empresa, supervisorSeleccionado, fechaRealizacion } = this.state;
+    const { nombre, supervisores, instalaciones, instalacionSeleccionado, empresa, supervisorSeleccionado, fechaRealizacion, id } = this.state;
     return (
       <div>
         <Menu />
@@ -138,10 +145,10 @@ class InformeNuevo extends Component {
               <EmpresaCard empresa={empresa} />
               <Card className="mt-4">
                 <CardHeader>
-                  <CardTitle>Nuevo Informe | Instalación</CardTitle>
+                  <CardTitle>Nuevo Informe | Instalación {id}</CardTitle>
                   <Form onSubmit={this.handlerSubmit}>
                     <Row form>
-                    <Col md={12}>
+                      <Col md={12}>
                         <FormGroup>
                           <Label for="exampleSelect">Titulo</Label>
                           <Input placeholder="Ingrese titulo de informe" name="nombre" value={nombre} onChange={this.handleChange} />
