@@ -23,12 +23,14 @@ import Menu from "../../components/Menu";
 import DatePicker from 'react-datepicker';
 import moment from "moment";
 
-import { profileList, getUser } from '../../common/utils';
+import { hasProfile, profileList, getUser } from '../../common/utils';
 import UserService from '../../http/service/UserService';
 import InstalacionService from '../../http/service/InstalacionService';
 import EmpresasService from '../../http/service/EmpresaService';
 import InformeService from '../../http/service/InformeService';
 import EmpresaCard from '../../components/EmpresaCard';
+
+import ObservacionModal from './ObservacionModal';
 
 class InformeNuevo extends Component {
   constructor(props) {
@@ -51,13 +53,16 @@ class InformeNuevo extends Component {
 
       observaciones: [],
 
+      detalle: null,
+
     };
 
-    this.nextItemId = 0;
     this.handleChange = this.handleChange.bind(this);
     this.handlerSubmit = this.handlerSubmit.bind(this);
+    this.handlerSave = this.handlerSave.bind(this);
 
   }
+
   handleChange(event) {
     const { value, name } = event.target;
     this.setState({ [name]: value });
@@ -77,8 +82,9 @@ class InformeNuevo extends Component {
           }, () => {
             if (informeId) {
               InformeService.informeInstalacionByID(informeId).then(informe => {
-                InformeService.observacionByInformeId(informeId).then(observaciones => {
+                InformeService.observacionByInformeId(informe.detalle).then(observaciones => {
                   this.setState({
+                    detalle: informe.detalle,
                     observaciones,
                     id: informe.id,
                     nombre: informe.nombre,
@@ -126,6 +132,20 @@ class InformeNuevo extends Component {
     return false;
   }
 
+  handlerSave(nombre) {
+    const { id, detalle } = this.state;
+    InformeService.insertObservacion({
+      nombre,
+      informeId: detalle,
+    }).then(data => {
+      InformeService.observacionByInformeId(detalle).then(observaciones => {
+        this.setState({
+          observaciones,
+        });
+      });
+    });
+  }
+
   render() {
     const { observaciones, nombre, supervisores, instalaciones, instalacionSeleccionado, empresa, supervisorSeleccionado, fechaRealizacion, id } = this.state;
     return (
@@ -154,7 +174,7 @@ class InformeNuevo extends Component {
                 <CardHeader>
                   <CardTitle>Nuevo Informe | Instalación {id}</CardTitle>
                   <Form onSubmit={this.handlerSubmit}>
-                    <Row form>
+                    <Row>
                       <Col md={12}>
                         <FormGroup>
                           <Label for="exampleSelect">Titulo</Label>
@@ -195,7 +215,10 @@ class InformeNuevo extends Component {
                       <Col md="3">
                         <Button color="primary" className="button-form" block disabled={this.disabled()}>
                           <FontAwesomeIcon icon="plus" /> {id ? 'Guardar' : 'Crear'}
-                        </Button>
+                        </Button>{' '}
+                        {id && (<Button color="info" className="button-form" block disabled={this.disabled()}>
+                          Solicitar Revisión
+                        </Button>)}
                       </Col>
                     </Row>
                   </Form>
@@ -207,19 +230,32 @@ class InformeNuevo extends Component {
               <Card className="mt-4">
                 <CardHeader>Observaciones</CardHeader>
                 <CardBody>
-                  {id && (<Button color="primary" className="button-form">
+                  {/*id && (<Button color="primary" className="button-form">
                       <FontAwesomeIcon icon="plus" /> Nueva Observación
-                  </Button>)}
+                  </Button>)*/}
+
+                  {id && (<ObservacionModal buttonLabel="Nueva Observacion" onSave={this.handlerSave} />)}
 
                   {observaciones.length > 0 && (<Table className="mt-4">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Descripción</th>
+                        <th>Recomendación</th>
+                        <th className="text-right">Acciones</th>
+                      </tr>
+                    </thead>
                     <tbody>
                       {observaciones.map(e => (
                         <tr key={e.id}>
                           <td>{e.id}</td>
                           <td>{e.nombre}</td>
+                          <td>{e.recomendacion} {hasProfile(
+                            [profileList.PREVENCIONISTA]) && (<Button color="info">Editar</Button>
+                          )}</td>
                           <td className="text-right"><Button color="danger">Eliminar</Button></td>
                         </tr>
-                      ))}
+                          ))}
                     </tbody>
                   </Table>)}
                 </CardBody>
@@ -228,8 +264,8 @@ class InformeNuevo extends Component {
           </Row>
         </Container>
       </div>
-    );
-  }
-}
-
-export default InformeNuevo;
+            );
+          }
+        }
+        
+        export default InformeNuevo;

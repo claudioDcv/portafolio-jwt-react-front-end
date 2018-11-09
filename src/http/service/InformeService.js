@@ -39,6 +39,15 @@ class InformeService {
             }).catch((reason) => reject(reason));
         });
     }
+
+    static insertObservacion(data) {
+        return new Promise((resolve, reject) => {
+            Service.post(`${endpoint}/observaciones`, data).then((data) => {
+                const da = data.obj;
+                resolve(da);
+            }).catch((reason) => reject(reason));
+        });
+    }
 }
 
 export default InformeService;
