@@ -16,7 +16,6 @@ import DetalleCapacitacion from './_examinador/DetalleCapacitacion';
 
 import TechniciansList from './_tecnico/List';
 import InformeNuevoInstalacion from './_tecnico/InformeNuevoInstalacion';
-import InformeNuevoPersona from './_tecnico/InformeNuevoPersona';
 
 import Login from "./auth/Login";
 import Home from './home/Home';

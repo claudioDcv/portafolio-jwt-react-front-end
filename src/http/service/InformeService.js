@@ -76,6 +76,16 @@ class InformeService {
             }).catch((reason) => reject(reason));
         });
     }
+
+    // {{API_HOST}}/api/informes/solicitar-revision-informe-detalle-id/3
+    static solicitudRevisionInforme(id) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${endpoint}/solicitar-revision-informe-detalle-id/${id}`).then((data) => {
+                const obj = data.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
 }
 
 export default InformeService;

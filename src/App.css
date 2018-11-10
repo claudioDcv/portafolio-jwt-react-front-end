@@ -88,3 +88,7 @@ label {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.botones-seleccion-de-listado-informes .btn-success:disabled {
+  opacity: 1;
+}

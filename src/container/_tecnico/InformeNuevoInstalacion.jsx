@@ -63,11 +63,14 @@ class InformeNuevo extends Component {
       solicitarRevision: false,
 
       tipo: 'informe-default',
+
+      informeData: null,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handlerSubmit = this.handlerSubmit.bind(this);
     this.handlerSave = this.handlerSave.bind(this);
+    this.handlerSolicitarRevision = this.handlerSolicitarRevision.bind(this);
 
   }
 
@@ -102,6 +105,7 @@ class InformeNuevo extends Component {
                   InformeService.informeInstalacionByID(informeId).then(informe => {
                     InformeService.observacionByInformeId(informe.detalle).then(observaciones => {
                       this.setState({
+                        informeData: informe,
                         detalle: informe.detalle,
                         observaciones,
                         informeId,
@@ -127,6 +131,7 @@ class InformeNuevo extends Component {
                     InformeService.observacionByInformeId(informe.detalle).then(observaciones => {
                       this.setState({
                         detalle: informe.detalle,
+                        informeData: informe,
                         observaciones,
                         informeId,
                         id: informe.id,
@@ -225,8 +230,13 @@ class InformeNuevo extends Component {
     });
   }
 
+  handlerSolicitarRevision() {
+    const { detalle } = this.state;
+    InformeService.solicitudRevisionInforme(detalle).then(solicitarRevision => this.setState({ solicitarRevision }));
+  }
+
   render() {
-    const { tipo, trabajadorSeleccionado, trabajadores, observaciones, nombre, supervisores, instalaciones, instalacionSeleccionado, empresa, supervisorSeleccionado, fechaRealizacion, id } = this.state;
+    const { informeData, tipo, trabajadorSeleccionado, trabajadores, observaciones, nombre, supervisores, instalaciones, instalacionSeleccionado, empresa, supervisorSeleccionado, fechaRealizacion, id } = this.state;
     return (
       <div>
         <Menu />
@@ -306,7 +316,7 @@ class InformeNuevo extends Component {
                         {!id && (<Button color="primary" className="button-form" block disabled={this.disabled()}>
                           <FontAwesomeIcon icon="plus" /> {id ? 'Guardar' : 'Crear'}
                         </Button>)}{' '}
-                        {id && (<Button color="info" className="button-form" block disabled={this.disabled()}>
+                        {id && (<Button onClick={this.handlerSolicitarRevision} color="info" className="button-form" block disabled={this.disabled()}>
                           Solicitar Revisión
                         </Button>)}
                       </Col>
