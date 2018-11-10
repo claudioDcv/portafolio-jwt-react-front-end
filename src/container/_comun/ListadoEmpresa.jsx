@@ -36,13 +36,6 @@ class ListadoEmpresa extends Component {
                             <Card>
                                 <CardHeader>
                                     <CardTitle><FontAwesomeIcon icon="building" /> Listado de Usuarios</CardTitle>
-                                    {hasProfile([profileList.ADMIN_SAFE]) && (
-                                        <Link to="/usuarios/registrar">
-                                            <Button color="primary">
-                                                Registrar Empresa
-                                            </Button>
-                                        </Link>)
-                                    }
                                 </CardHeader>
                                 <CardBody>
                                     <Table size="sm" striped hover responsive>

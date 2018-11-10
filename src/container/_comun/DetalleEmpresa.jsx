@@ -64,7 +64,9 @@ class DetalleEmpresa extends Component {
                         <Col md="12 mt-4 mb-4">
                             <ButtonGroup>
                                 {hasProfile([profileList.TECNICO, profileList.SUPERVISOR, profileList.PREVENCIONISTA]) && (<Link to={`/home/empresas/${empresa.id}/tecnico`}><Button><FontAwesomeIcon icon="file-alt" /> Informes</Button></Link>)}
-                                {hasProfile([profileList.EXAMINADOR, profileList.SUPERVISOR]) && (<Link to={`/home/empresas/${empresa.id}/examinador`}><Button><FontAwesomeIcon icon="graduation-cap" /> Charlas</Button></Link>)}
+                                {hasProfile([profileList.SUPERVISOR, profileList.EXAMINADOR]) && (<Link to={`/home/empresas/${empresa.id}/supervisor`}><Button><FontAwesomeIcon icon="graduation-cap" /> Charlas</Button></Link>)}
+                                {hasProfile([profileList.EXAMINADOR]) && (<Link to={`/home/empresas/${empresa.id}/examinador`}><Button><FontAwesomeIcon icon="graduation-cap" /> Charlas</Button></Link>)}
+                                
                                 {hasProfile([profileList.MEDICO, profileList.SUPERVISOR]) && (<Link to={`/home/empresas/${empresa.id}/medico`}><Button><FontAwesomeIcon icon="notes-medical" /> Visitas Medicas</Button></Link>)}
                             </ButtonGroup>
                         </Col>

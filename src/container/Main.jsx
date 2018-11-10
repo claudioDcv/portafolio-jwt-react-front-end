@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Redirect, } from "react-router-dom";
 
 import UsersList from './users/List';
 import UserSingle from './users/Single';
-import UsersCreate from './users/Create';
 
 import ProfilesList from './profiles/List';
 
@@ -12,6 +11,8 @@ import DetalleEmpresa from './_comun/DetalleEmpresa';
 
 import MisVisitasMedicas from './_medico/MisVisitasMedicas';
 import MisCharlas from './_examinador/MisCharlas';
+import Charlas from './_supervisor/Charlas';
+
 import DetalleCapacitacion from './_examinador/DetalleCapacitacion';
 
 import TechniciansList from './_tecnico/List';
@@ -29,7 +30,6 @@ class Main extends Component {
           <Route exact path="/" component={Login} />
           <PrivateRoute exact path="/home" component={Home} />
           <PrivateRoute exact path="/usuarios" component={UsersList} />
-          <PrivateRoute path="/usuarios/registrar" component={UsersCreate} />
           <PrivateRoute path="/usuarios/detalle/:id" component={UserSingle} />
 
           <PrivateRoute exact path="/perfiles" component={ProfilesList} />
@@ -39,6 +39,10 @@ class Main extends Component {
           <PrivateRoute exact path="/home/empresas/:id/medico" component={MisVisitasMedicas} />
           <PrivateRoute exact path="/home/empresas/:id/examinador" component={MisCharlas} />
           <PrivateRoute exact path="/home/empresas/:id/examinador/capacitacion/:idCapacitacion" component={DetalleCapacitacion} />
+          
+          <PrivateRoute exact path="/home/empresas/:id/supervisor" component={Charlas} />
+          <PrivateRoute exact path="/home/empresas/:id/supervisor/capacitacion/:idCapacitacion" component={DetalleCapacitacion} />
+
 
           <PrivateRoute exact path="/home/empresas/:id/tecnico" component={TechniciansList} />
           <PrivateRoute exact path="/home/empresas/:id/tecnico/informe-instalacion" component={InformeNuevoInstalacion} />
