@@ -11,7 +11,19 @@ class CapacitacionService {
      */
     static findByEmpresaId(empresaId) {
         return new Promise((resolve, reject) => {
-            Service.post(endpoint, {
+            Service.get(`${endpoint}/examinador/${empresaId}`, {
+                empresaId,
+            }).then((data) => {
+                const d = data;
+                const obj = d.obj.map(e => new Capacitacion(e));
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
+
+    static findByEmpresaIdParaSupervisor(empresaId) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${endpoint}/supervisor/${empresaId}`, {
                 empresaId,
             }).then((data) => {
                 const d = data;

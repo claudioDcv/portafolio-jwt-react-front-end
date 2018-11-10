@@ -20,7 +20,7 @@ import Menu from '../../components/Menu';
 import Loading from '../../components/Loading';
 
 import EmpresasService from '../../http/service/EmpresaService';
-import CapacitacionService from '../../http/service/CapacitacionServiceSupervisor';
+import CapacitacionService from '../../http/service/CapacitacionService';
 
 import EmpresaCard from '../../components/EmpresaCard';
 import TablaCapacitaciones from '../../components/TablaCapacitaciones';
@@ -39,7 +39,7 @@ class MisVisitasMedicas extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
         EmpresasService.findById(id).then(empresa => {
-            CapacitacionService.findByEmpresaId(empresa.id).then(capacitaciones => {
+            CapacitacionService.findByEmpresaIdParaSupervisor(empresa.id).then(capacitaciones => {
                 this.setState({
                     empresa,
                     capacitaciones,
