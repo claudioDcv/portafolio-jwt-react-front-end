@@ -53,11 +53,6 @@ class List extends Component {
                             <Card>
                                 <CardHeader>
                                     <CardTitle>Listado de Usuarios</CardTitle>
-                                    <Link to="/usuarios/registrar">
-                                        <Button color="primary">
-                                            Registrar Usuario
-                                        </Button>
-                                    </Link>
                                 </CardHeader>
                                 <CardBody>
                                     <Table size="sm" striped hover responsive>
