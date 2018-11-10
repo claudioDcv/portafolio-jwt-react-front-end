@@ -45,7 +45,8 @@ class Main extends Component {
           <PrivateRoute exact path="/home/empresas/:id/tecnico/informe-instalacion" component={InformeNuevoInstalacion} />
           <PrivateRoute exact path="/home/empresas/:id/tecnico/informe-instalacion/:informeId" component={InformeNuevoInstalacion} />
 
-          <PrivateRoute exact path="/home/empresas/:id/tecnico/informe-persona" component={InformeNuevoPersona} />
+          <PrivateRoute exact path="/home/empresas/:id/tecnico/informe-persona" component={InformeNuevoInstalacion} />
+          <PrivateRoute exact path="/home/empresas/:id/tecnico/informe-persona/:informeId" component={InformeNuevoInstalacion} />
         </div>
       </Router>);
   }

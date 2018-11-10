@@ -12,6 +12,7 @@ import {
   Nav,
   NavItem,
   NavLink,
+  ButtonGroup,
   Card,
   Button,
   CardTitle,
@@ -141,48 +142,50 @@ class List extends Component {
                   </Row>
                 </CardHeader>
                 <CardBody>
-                  <Button
-                    color={estado === 0 && tipoInforme === 'trabajador' ? 'success' : 'default'}
-                    onClick={() => this.callInformes(0, 'trabajador')}
-                  >Informe Trabajadores Pendientes</Button>
-                  <Button
-                    color={estado === 1 && tipoInforme === 'trabajador' ? 'success' : 'default'}
-                    onClick={() => this.callInformes(1, 'trabajador')}
-                  >Informe Trabajadores Aprobado</Button>
-                  <Button
-                    color={estado === 0 && tipoInforme === 'instalacion' ? 'success' : 'default'}
-                    onClick={() => this.callInformes(0, 'instalacion')}
-                  >Informe Instalaciones Pendientes</Button>
-                  <Button
-                    color={estado === 1 && tipoInforme === 'instalacion' ? 'success' : 'default'}
-                    onClick={() => this.callInformes(1, 'instalacion')}
-                  >Informe Instalaciones Aprobado</Button>
-                  <Table>
-                    <thead>
-                      <tr>
-                        <th>Id</th>
-                        <th>Nombre</th>
-                        <th>Acción</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {informes.map(e => (
-                        <tr key={e.id}>
-                          <td>{e.id}</td>
-                          <td>{e.nombre}</td>
-                          <td><Link to={`/home/empresas/${empresa.id}/tecnico/informe-instalacion/${e.id}`}>Ver</Link></td>
+                  <ButtonGroup>
+                    <Button
+                      color={estado === 0 && tipoInforme === 'trabajador' ? 'success' : 'default'}
+                      onClick={() => this.callInformes(0, 'trabajador')}
+                    >Trabajadores Pendientes</Button>
+                    <Button
+                      color={estado === 1 && tipoInforme === 'trabajador' ? 'success' : 'default'}
+                      onClick={() => this.callInformes(1, 'trabajador')}
+                    >Trabajadores Ok</Button>
+                    <Button
+                      color={estado === 0 && tipoInforme === 'instalacion' ? 'success' : 'default'}
+                      onClick={() => this.callInformes(0, 'instalacion')}
+                    >Instalaciones Pendientes</Button>
+                    <Button
+                      color={estado === 1 && tipoInforme === 'instalacion' ? 'success' : 'default'}
+                      onClick={() => this.callInformes(1, 'instalacion')}
+                    >Instalaciones Ok</Button>
+                    </ButtonGroup>
+                    <Table className="mt-4">
+                      <thead>
+                        <tr>
+                          <th>Id</th>
+                          <th>Nombre</th>
+                          <th>Acción</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </Table>
+                      </thead>
+                      <tbody>
+                        {informes.map(e => (
+                          <tr key={e.id}>
+                            <td>{e.id}</td>
+                            <td>{e.nombre}</td>
+                            <td><Link to={`/home/empresas/${empresa.id}/tecnico/informe-instalacion/${e.id}`}>Ver</Link></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
                 </CardBody>
               </Card>
             </Col>
           </Row>
         </Container>
       </div>
-    );
-  }
-}
-
-export default List;
+        );
+      }
+    }
+    
+    export default List;

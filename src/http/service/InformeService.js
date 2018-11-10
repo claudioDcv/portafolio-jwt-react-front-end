@@ -31,6 +31,15 @@ class InformeService {
         });
     }
 
+    static informeTrabajadorByID(id) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${endpoint}/trabajador/${id}`).then((data) => {
+                const obj = data.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
+
     static observacionByInformeId(id) {
         return new Promise((resolve, reject) => {
             Service.get(`${endpoint}/observaciones/informe-detalle/${id}`).then((data) => {
