@@ -83,12 +83,12 @@ class MisVisitasMedicas extends Component {
                   <CardTitle>Informe</CardTitle>
                   <Row>
                     <Col>
-                      <Link to={`/home/empresas/${empresa.id}/tecnico/informe-persona`} className="mr-2">
+                      <Link to={`/home/empresas/${empresa.id}/supervisor/capacitacion/Nueva-charla`} className="mr-2">
                         <Button color="primary">
                           <FontAwesomeIcon icon="plus" /> Crear Charlas
                         </Button>
                       </Link>
-                      <Link to={`/home/empresas/${empresa.id}/tecnico/informe-instalacion`} id="TooltipInstall">
+                      <Link to={`/home/empresas/${empresa.id}/supervisor/capacitacion/asignar-charla`} id="TooltipInstall">
                         <Button color="primary">
                           <FontAwesomeIcon icon="plus" /> Asignar Charlas
                         </Button>

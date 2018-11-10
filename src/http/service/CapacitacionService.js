@@ -52,6 +52,14 @@ class CapacitacionService {
             }).catch((reason) => reject(reason));
         });
     }
+    static nuevacharlaSave(data) {
+        return new Promise((resolve, reject) => {
+            Service.post(`${endpoint}`, data).then((data) => {
+                const obj = data.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
 }
 
 export default CapacitacionService;

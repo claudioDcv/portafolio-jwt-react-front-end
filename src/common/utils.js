@@ -58,6 +58,7 @@ export const profileList = {
     SAFE: ['ADMIN_SAFE','TECNICO','PREVENCIONISTA','EXAMINADOR','MEDICO','SUPERVISOR'],
     SAFE_ADMIN_SUPERVISOR: ['ADMIN_SAFE','SUPERVISOR'],
     SUPERVISOR_ID: 7,
+    EXAMINADOR_ID: 6,
 };
 
 export const fechaFormateada = (date) => {
