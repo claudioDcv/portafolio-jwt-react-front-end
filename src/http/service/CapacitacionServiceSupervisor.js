@@ -1,17 +1,17 @@
 import Service from './Service';
 import Capacitacion from '../../entity/Capacitacion';
 
-const endpoint = '/api/capacitaciones/supervisor/';
+const endpoint = '/api/capacitaciones';
 
 class CapacitacionService {
 
     /**
-     * findByEmpresaId
+     * findByEmpresaId supervisor/
      * @param {number} empresaId 
      */
     static findByEmpresaId(empresaId) {
         return new Promise((resolve, reject) => {
-            Service.post(endpoint, {
+            Service.get(`${endpoint}/`, {
                 empresaId,
             }).then((data) => {
                 const d = data;
