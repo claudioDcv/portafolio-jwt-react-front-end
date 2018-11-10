@@ -24,6 +24,7 @@ import classnames from "classnames";
 import Menu from "../../components/Menu";
 
 import EmpresasService from '../../http/service/EmpresaService';
+import InformeService from '../../http/service/InformeService';
 
 import EmpresaCard from '../../components/EmpresaCard';
 
@@ -33,18 +34,34 @@ class List extends Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      activeTab: "1",
-      data: [],
+      estado: 0,
+      informes: [],
       empresa: {},
+      tipoInforme: 'trabajador',
     };
+    this.callInformes = this.callInformes.bind(this);
   }
 
   componentDidMount() {
+    const { estado, tipoInforme } = this.state;
     const { id } = this.props.match.params;
     EmpresasService.findById(id).then(empresa => {
-      this.setState({
-        empresa,
-      });
+      if (tipoInforme === 'trabajador') {
+        InformeService.informesTrabajadorByEstado(empresa.id, estado).then(informes => {
+          this.setState({
+            empresa,
+            informes,
+          });
+        })
+      } else {
+        //InformeService.informesTrabajadorByEstado(empresa.id, estado).then(informes => {
+        this.setState({
+          empresa,
+          informes: [],
+        });
+        //})
+      }
+
     });
   }
 
@@ -56,8 +73,32 @@ class List extends Component {
     }
   }
 
+  callInformes(estado, tipoInforme) {
+    const { empresa } = this.state;
+    if (tipoInforme === 'trabajador') {
+      InformeService.informesTrabajadorByEstado(empresa.id, estado).then(informes => {
+        this.setState({
+          empresa,
+          informes,
+          estado,
+          tipoInforme,
+        });
+      })
+    } else {
+      InformeService.informesInstalacionByEstado(empresa.id, estado).then(informes => {
+        this.setState({
+          empresa,
+          informes,
+          estado,
+          tipoInforme,
+        });
+      })
+    }
+
+  }
+
   render() {
-    const { data, empresa } = this.state;
+    const { informes, empresa, estado, tipoInforme } = this.state;
     return (
       <div>
         <Menu />
@@ -100,270 +141,40 @@ class List extends Component {
                   </Row>
                 </CardHeader>
                 <CardBody>
-                  <Nav tabs>
-                    <NavItem color="dark">
-                      <NavLink
-                        className={classnames({
-                          active: this.state.activeTab === "1"
-                        })}
-                        onClick={() => {
-                          this.toggle("1");
-                        }}
-                      >
-                        Aprobadas(Personas)
-                      </NavLink>
-                    </NavItem>
-                    <NavItem color="dark">
-                      <NavLink
-                        className={classnames({
-                          active: this.state.activeTab === "2"
-                        })}
-                        onClick={() => {
-                          this.toggle("2");
-                        }}
-                      >
-                        Aprobadas(Instalaciones)
-                      </NavLink>
-                    </NavItem>
-                    <NavItem color="dark">
-                      <NavLink
-                        className={classnames({
-                          active: this.state.activeTab === "3"
-                        })}
-                        onClick={() => {
-                          this.toggle("3");
-                        }}
-                      >
-                        Rechazadas(Personas)
-                      </NavLink>
-                    </NavItem>
-                    <NavItem color="dark">
-                      <NavLink
-                        className={classnames({
-                          active: this.state.activeTab === "4"
-                        })}
-                        onClick={() => {
-                          this.toggle("4");
-                        }}
-                      >
-                        Rechazadas(Instalaciones)
-                      </NavLink>
-                    </NavItem>
-                    <NavItem color="dark">
-                      <NavLink
-                        className={classnames({
-                          active: this.state.activeTab === "5"
-                        })}
-                        onClick={() => {
-                          this.toggle("5");
-                        }}
-                      >
-                        Pendientes(Personas)
-                      </NavLink>
-                    </NavItem>
-                  </Nav>
-                  <TabContent activeTab={this.state.activeTab}>
-                    <TabPane tabId="1">
-                      <Table size="sm" striped hover responsive>
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Fecha</th>
-                            <th>Supervisor</th>
-                            <th>Prevencionista</th>
-                            <th>Empresa</th>
-                            <th>Instalacion</th>
-                            <th>Accion</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {data.map(e => (
-                            <tr key={e.id}>
-                              <th scope="row">
-                                <Link to={`/informe/detalle/${e.id}`}>
-                                  <Button color="link" size="sm">
-                                    {e.id}
-                                  </Button>
-                                </Link>
-                              </th>
-                              <td>{e.date}</td>
-                              <td>{e.supervisor}</td>
-                              <td>{e.preventionist}</td>
-                              <td>{e.business}</td>
-                              <td>{e.installation}</td>
-                              <td>
-                                <Link to={`/informe/detalle/${e.id}`}>
-                                  <Button color="primary" size="sm" outline>
-                                    ver :<FontAwesomeIcon icon="eye" />
-                                  </Button>
-                                </Link>{" "}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </Table>
-                    </TabPane>
-                    <TabPane tabId="2">
-                      <Table size="sm" striped hover responsive>
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Fecha</th>
-                            <th>Supervisor</th>
-                            <th>Prevencionista</th>
-                            <th>Empresa</th>
-                            <th>Instalacion</th>
-                            <th>Accion</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {data.map(e => (
-                            <tr key={e.id}>
-                              <th scope="row">
-                                <Link to={`/informe/detalle/${e.id}`}>
-                                  <Button color="link" size="sm">
-                                    {e.id}
-                                  </Button>
-                                </Link>
-                              </th>
-                              <td>{e.date}</td>
-                              <td>{e.supervisor}</td>
-                              <td>{e.preventionist}</td>
-                              <td>{e.business}</td>
-                              <td>{e.installation}</td>
-                              <td>
-                                <Link to={`/informe/detalle/${e.id}`}>
-                                  <Button color="primary" size="sm" outline>
-                                    ver :<FontAwesomeIcon icon="eye" />
-                                  </Button>
-                                </Link>{" "}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </Table>
-                    </TabPane>
-                    <TabPane tabId="3">
-                      <Table size="sm" striped hover responsive>
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Fecha</th>
-                            <th>Supervisor</th>
-                            <th>Prevencionista</th>
-                            <th>Empresa</th>
-                            <th>Instalacion</th>
-                            <th>Accion</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {data.map(e => (
-                            <tr key={e.id}>
-                              <th scope="row">
-                                <Link to={`/informe/detalle/${e.id}`}>
-                                  <Button color="link" size="sm">
-                                    {e.id}
-                                  </Button>
-                                </Link>
-                              </th>
-                              <td>{e.date}</td>
-                              <td>{e.supervisor}</td>
-                              <td>{e.preventionist}</td>
-                              <td>{e.business}</td>
-                              <td>{e.installation}</td>
-                              <td>
-                                <Link to={`/informe/detalle/${e.id}`}>
-                                  <Button color="primary" size="sm" outline>
-                                    ver :<FontAwesomeIcon icon="eye" />
-                                  </Button>
-                                </Link>{" "}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </Table>
-                    </TabPane>
-                    <TabPane tabId="4">
-                      <Table size="sm" striped hover responsive>
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Fecha</th>
-                            <th>Supervisor</th>
-                            <th>Prevencionista</th>
-                            <th>Empresa</th>
-                            <th>Instalacion</th>
-                            <th>Accion</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {data.map(e => (
-                            <tr key={e.id}>
-                              <th scope="row">
-                                <Link to={`/informe/detalle/${e.id}`}>
-                                  <Button color="link" size="sm">
-                                    {e.id}
-                                  </Button>
-                                </Link>
-                              </th>
-                              <td>{e.date}</td>
-                              <td>{e.supervisor}</td>
-                              <td>{e.preventionist}</td>
-                              <td>{e.business}</td>
-                              <td>{e.installation}</td>
-                              <td>
-                                <Link to={`/informe/detalle/${e.id}`}>
-                                  <Button color="primary" size="sm" outline>
-                                    ver :<FontAwesomeIcon icon="eye" />
-                                  </Button>
-                                </Link>{" "}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </Table>
-                    </TabPane>
-                    <TabPane tabId="5">
-                      <Table size="sm" striped hover responsive>
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Fecha</th>
-                            <th>Supervisor</th>
-                            <th>Prevencionista</th>
-                            <th>Empresa</th>
-                            <th>Instalacion</th>
-                            <th>Accion</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {data.map(e => (
-                            <tr key={e.id}>
-                              <th scope="row">
-                                <Link to={`/informe/detalle/${e.id}`}>
-                                  <Button color="link" size="sm">
-                                    {e.id}
-                                  </Button>
-                                </Link>
-                              </th>
-                              <td>{e.date}</td>
-                              <td>{e.supervisor}</td>
-                              <td>{e.preventionist}</td>
-                              <td>{e.business}</td>
-                              <td>{e.installation}</td>
-                              <td>
-                                <Link to={`/informe/detalle/${e.id}`}>
-                                  <Button color="primary" size="sm" outline>
-                                    ver :<FontAwesomeIcon icon="eye" />
-                                  </Button>
-                                </Link>{" "}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </Table>
-                    </TabPane>
-                  </TabContent>
+                  <Button
+                    color={estado === 0 && tipoInforme === 'trabajador' ? 'success' : 'default'}
+                    onClick={() => this.callInformes(0, 'trabajador')}
+                  >Informe Trabajadores Pendientes</Button>
+                  <Button
+                    color={estado === 1 && tipoInforme === 'trabajador' ? 'success' : 'default'}
+                    onClick={() => this.callInformes(1, 'trabajador')}
+                  >Informe Trabajadores Aprobado</Button>
+                  <Button
+                    color={estado === 0 && tipoInforme === 'instalacion' ? 'success' : 'default'}
+                    onClick={() => this.callInformes(0, 'instalacion')}
+                  >Informe Instalaciones Pendientes</Button>
+                  <Button
+                    color={estado === 1 && tipoInforme === 'instalacion' ? 'success' : 'default'}
+                    onClick={() => this.callInformes(1, 'instalacion')}
+                  >Informe Instalaciones Aprobado</Button>
+                  <Table>
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {informes.map(e => (
+                        <tr key={e.id}>
+                          <td>{e.id}</td>
+                          <td>{e.nombre}</td>
+                          <td><Link to={`/home/empresas/${empresa.id}/tecnico/informe-instalacion/${e.id}`}>Ver</Link></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
                 </CardBody>
               </Card>
             </Col>

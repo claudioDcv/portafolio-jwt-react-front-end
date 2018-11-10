@@ -48,6 +48,25 @@ class InformeService {
             }).catch((reason) => reject(reason));
         });
     }
+
+    // {{API_HOST}}/api/informes/instalacion/por-estado/0
+    static informesTrabajadorByEstado(empresaId, id) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${endpoint}/trabajador/por-estado/${empresaId}/${id}`).then((data) => {
+                const obj = data.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
+
+    static informesInstalacionByEstado(empresaId, id) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${endpoint}/instalacion/por-estado/${empresaId}/${id}`).then((data) => {
+                const obj = data.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
 }
 
 export default InformeService;
