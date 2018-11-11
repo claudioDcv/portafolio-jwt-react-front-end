@@ -19,10 +19,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Menu from "../../components/Menu";
 
+import { profileList } from '../../common/utils';
+import UserService from '../../http/service/UserService';
 import EmpresasService from '../../http/service/EmpresaService';
 import InformeService from '../../http/service/InformeService';
 
 import EmpresaCard from '../../components/EmpresaCard';
+
+import ModalAsignarPrevencionistaInformeDetalle from '../../components/ModalAsignarPrevencionistaInformeDetalle';
 
 class List extends Component {
   constructor(props) {
@@ -34,32 +38,41 @@ class List extends Component {
       informes: [],
       empresa: {},
       tipoInforme: 'trabajador',
+      prevencionistas: [],
     };
     this.callInformes = this.callInformes.bind(this);
+    this.handlerAsignarPrevencionistaAInforme = this.handlerAsignarPrevencionistaAInforme.bind(this);
   }
 
   componentDidMount() {
+    this.regargarVista();
+  }
+
+  regargarVista() {
     const { estado, tipoInforme } = this.state;
     const { id } = this.props.match.params;
     EmpresasService.findById(id).then(empresa => {
-      if (tipoInforme === 'trabajador') {
-        InformeService.informesTrabajadorBySupervisor(empresa.id, estado).then(informes => {
-          this.setState({
-            empresa,
-            informes,
-          });
-        })
-      } else {
-        InformeService.informesInstalacionBySupervisor(empresa.id, estado).then(informes => {
-          this.setState({
-            empresa,
-            informes,
-            estado,
-            tipoInforme,
-          });
-        })
-      }
-
+      UserService.findAllByProfileId(profileList.PREVENCIONISTA_ID).then(prevencionistas => {
+        if (tipoInforme === 'trabajador') {
+          InformeService.informesTrabajadorBySupervisor(empresa.id, estado).then(informes => {
+            this.setState({
+              empresa,
+              informes,
+              prevencionistas: prevencionistas.map(e => ({ value: e.id, label: `${e.name}` })),
+            });
+          })
+        } else {
+          InformeService.informesInstalacionBySupervisor(empresa.id, estado).then(informes => {
+            this.setState({
+              empresa,
+              informes,
+              estado,
+              tipoInforme,
+              prevencionistas: prevencionistas.map(e => ({ value: e.id, label: `${e.name}` })),
+            });
+          })
+        }
+      });
     });
   }
 
@@ -95,8 +108,15 @@ class List extends Component {
 
   }
 
+  handlerAsignarPrevencionistaAInforme(data) {
+    // /asignar-prevencionista/{idDetalle}/{idPrevencionista} asignarPrevencionista
+    InformeService.asignarPrevencionista(data).then(() => {
+      this.regargarVista();
+    })
+  };
+
   render() {
-    const { informes, empresa, estado, tipoInforme } = this.state;
+    const { informes, empresa, estado, tipoInforme, prevencionistas } = this.state;
     return (
       <div>
         <Menu />
@@ -138,35 +158,42 @@ class List extends Component {
                       className="mr-1"
                       onClick={() => this.callInformes(0, 'instalacion')}
                     >Instalaciones Pendientes</Button>
-                    </ButtonGroup>
-                    <Table className="mt-4">
-                      <thead>
-                        <tr>
-                          <th>Id</th>
-                          <th>Nombre</th>
-                          <th>Solicitud de Revisión</th>
-                          <th>Acción</th>
+                  </ButtonGroup>
+                  <Table className="mt-4">
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Prevencionista</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {informes.map(e => (
+                        <tr key={e.id}>
+                          <td>{e.id}</td>
+                          <td>{e.nombre}</td>
+                          <td>{e.prevencionista ? (
+                            <Badge color="success">Prevencionista Asignado</Badge>
+                          ) : (
+                              <ModalAsignarPrevencionistaInformeDetalle
+                                buttonLabel="Asignar"
+                                prevencionistas={prevencionistas}
+                                informe={e}
+                                onAsignar={this.handlerAsignarPrevencionistaAInforme}
+                              />
+                            )}</td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        {informes.map(e => (
-                          <tr key={e.id}>
-                            <td>{e.id}</td>
-                            <td>{e.nombre}</td>
-                            <td>{e.solicitarRevision && (<Badge color="success">Solicitud Enviada</Badge>)}</td>
-                            <td><Link to={`/home/empresas/${empresa.id}/tecnico/${tipoInforme === 'trabajador' ? 'informe-persona' : 'informe-instalacion'}/${e.id}`}><Button color="info"><FontAwesomeIcon className="mr-1"  icon="file-alt" />Ver</Button></Link></td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </Table>
+                      ))}
+                    </tbody>
+                  </Table>
                 </CardBody>
               </Card>
             </Col>
           </Row>
         </Container>
       </div>
-        );
-      }
-    }
-    
-    export default List;
+    );
+  }
+}
+
+export default List;

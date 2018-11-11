@@ -13,7 +13,6 @@ import MisVisitasMedicas from './_medico/MisVisitasMedicas';
 import SupervisarVisitasMedicas from './_supervisor/SupervisarVisitasMedicas';
 import NuevaVisitaMedica from './_supervisor/NuevaVisitaMedica';
 
-
 import MisCharlas from './_examinador/MisCharlas';
 import Charlas from './_supervisor/Charlas';
 
@@ -21,15 +20,15 @@ import DetalleCapacitacion from './_examinador/DetalleCapacitacion';
 import DetalleCapacitacionSupervisor from './_supervisor/DetalleCapacitacion';
 
 import TechniciansList from './_tecnico/List';
-import TechniciansListsupervisor from './_supervisor/List';
+import TechniciansListsupervisor from './_supervisor/ListadoInformes';
 
 import InformeNuevoInstalacion from './_tecnico/InformeNuevoInstalacion';
 import NuevaCharla from './_supervisor/NuevaCharla';
 
-
-
 import Login from "./auth/Login";
 import Home from './home/Home';
+
+import ListadoInformesAsignado from './_prevencionista/ListadoInformesAsignado';
 
 class Main extends Component {
 
@@ -63,6 +62,8 @@ class Main extends Component {
 
           <PrivateRoute exact path="/home/empresas/:id/tecnico/informe-persona" component={InformeNuevoInstalacion} />
           <PrivateRoute exact path="/home/empresas/:id/tecnico/informe-persona/:informeId" component={InformeNuevoInstalacion} />
+
+          <PrivateRoute exact path="/home/empresas/:id/prevencionista" component={ListadoInformesAsignado} />
         </div>
       </Router>);
   }
