@@ -1,0 +1,172 @@
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import {
+  Table,
+  CardBody,
+  CardHeader,
+  BreadcrumbItem,
+  Container,
+  Breadcrumb,
+  Badge,
+  ButtonGroup,
+  Card,
+  Button,
+  CardTitle,
+  Row,
+  Col
+} from "reactstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import Menu from "../../components/Menu";
+
+import EmpresasService from '../../http/service/EmpresaService';
+import InformeService from '../../http/service/InformeService';
+
+import EmpresaCard from '../../components/EmpresaCard';
+
+class List extends Component {
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      estado: 0,
+      informes: [],
+      empresa: {},
+      tipoInforme: 'trabajador',
+    };
+    this.callInformes = this.callInformes.bind(this);
+  }
+
+  componentDidMount() {
+    const { estado, tipoInforme } = this.state;
+    const { id } = this.props.match.params;
+    EmpresasService.findById(id).then(empresa => {
+      if (tipoInforme === 'trabajador') {
+        InformeService.informesTrabajadorBySupervisor(empresa.id, estado).then(informes => {
+          this.setState({
+            empresa,
+            informes,
+          });
+        })
+      } else {
+        InformeService.informesInstalacionBySupervisor(empresa.id, estado).then(informes => {
+          this.setState({
+            empresa,
+            informes,
+            estado,
+            tipoInforme,
+          });
+        })
+      }
+
+    });
+  }
+
+  toggle(tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab
+      });
+    }
+  }
+
+  callInformes(estado, tipoInforme) {
+    const { empresa } = this.state;
+    if (tipoInforme === 'trabajador') {
+      InformeService.informesTrabajadorBySupervisor(empresa.id, estado).then(informes => {
+        this.setState({
+          empresa,
+          informes,
+          estado,
+          tipoInforme,
+        });
+      })
+    } else {
+      InformeService.informesInstalacionBySupervisor(empresa.id, estado).then(informes => {
+        this.setState({
+          empresa,
+          informes,
+          estado,
+          tipoInforme,
+        });
+      })
+    }
+
+  }
+
+  render() {
+    const { informes, empresa, estado, tipoInforme } = this.state;
+    return (
+      <div>
+        <Menu />
+        <Container>
+          <Row>
+            <Col>
+              <Breadcrumb>
+                <BreadcrumbItem>
+                  <Link to="/home">Home</Link>
+                </BreadcrumbItem>
+                <BreadcrumbItem>
+                  <Link to="/home/empresas">Empresas</Link>
+                </BreadcrumbItem>
+                <BreadcrumbItem>
+                  <Link to={`/home/empresas/${empresa.id}`}>{empresa.nombre}</Link>
+                </BreadcrumbItem>
+                <BreadcrumbItem active>Informes</BreadcrumbItem>
+              </Breadcrumb>
+              <EmpresaCard empresa={empresa} />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Card className="mt-4">
+                <CardHeader>
+                  <CardTitle>Informe</CardTitle>
+                </CardHeader>
+                <CardBody>
+                  <ButtonGroup className="botones-seleccion-de-listado-informes">
+                    <Button
+                      color={estado === 0 && tipoInforme === 'trabajador' ? 'success' : 'secondary'}
+                      disabled={(estado === 0 && tipoInforme === 'trabajador')}
+                      className="mr-1"
+                      onClick={() => this.callInformes(0, 'trabajador')}
+                    >Trabajadores Pendientes</Button>
+                    <Button
+                      color={estado === 0 && tipoInforme === 'instalacion' ? 'success' : 'secondary'}
+                      disabled={(estado === 0 && tipoInforme === 'instalacion')}
+                      className="mr-1"
+                      onClick={() => this.callInformes(0, 'instalacion')}
+                    >Instalaciones Pendientes</Button>
+                    </ButtonGroup>
+                    <Table className="mt-4">
+                      <thead>
+                        <tr>
+                          <th>Id</th>
+                          <th>Nombre</th>
+                          <th>Solicitud de Revisión</th>
+                          <th>Acción</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {informes.map(e => (
+                          <tr key={e.id}>
+                            <td>{e.id}</td>
+                            <td>{e.nombre}</td>
+                            <td>{e.solicitarRevision && (<Badge color="success">Solicitud Enviada</Badge>)}</td>
+                            <td><Link to={`/home/empresas/${empresa.id}/tecnico/${tipoInforme === 'trabajador' ? 'informe-persona' : 'informe-instalacion'}/${e.id}`}><Button color="info"><FontAwesomeIcon className="mr-1"  icon="file-alt" />Ver</Button></Link></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+        );
+      }
+    }
+    
+    export default List;

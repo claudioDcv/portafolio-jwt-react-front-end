@@ -10,6 +10,10 @@ import ListadoEmpresa from './_comun/ListadoEmpresa';
 import DetalleEmpresa from './_comun/DetalleEmpresa';
 
 import MisVisitasMedicas from './_medico/MisVisitasMedicas';
+import SupervisarVisitasMedicas from './_supervisor/SupervisarVisitasMedicas';
+import NuevaVisitaMedica from './_supervisor/NuevaVisitaMedica';
+
+
 import MisCharlas from './_examinador/MisCharlas';
 import Charlas from './_supervisor/Charlas';
 
@@ -17,6 +21,8 @@ import DetalleCapacitacion from './_examinador/DetalleCapacitacion';
 import DetalleCapacitacionSupervisor from './_supervisor/DetalleCapacitacion';
 
 import TechniciansList from './_tecnico/List';
+import TechniciansListsupervisor from './_supervisor/List';
+
 import InformeNuevoInstalacion from './_tecnico/InformeNuevoInstalacion';
 import NuevaCharla from './_supervisor/NuevaCharla';
 
@@ -47,7 +53,10 @@ class Main extends Component {
           <PrivateRoute exact path="/home/empresas/:id/supervisor/capacitacion" component={Charlas} />
           <PrivateRoute exact path="/home/empresas/:id/supervisor/capacitacion/nueva-charla" component={NuevaCharla} />
           <PrivateRoute exact path="/home/empresas/:id/supervisor/capacitacion/ver/:idCapacitacion" component={DetalleCapacitacionSupervisor} />
-
+          <PrivateRoute exact path="/home/empresas/:id/supervisor" component={TechniciansListsupervisor} />
+          <PrivateRoute exact path="/home/empresas/:id/supervisor/visitas-medicas" component={SupervisarVisitasMedicas} />
+          <PrivateRoute exact path="/home/empresas/:id/supervisor/visitas-medicas/nueva-visita" component={NuevaVisitaMedica} />
+          
           <PrivateRoute exact path="/home/empresas/:id/tecnico" component={TechniciansList} />
           <PrivateRoute exact path="/home/empresas/:id/tecnico/informe-instalacion" component={InformeNuevoInstalacion} />
           <PrivateRoute exact path="/home/empresas/:id/tecnico/informe-instalacion/:informeId" component={InformeNuevoInstalacion} />

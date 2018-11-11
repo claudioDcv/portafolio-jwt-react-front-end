@@ -63,11 +63,12 @@ class DetalleEmpresa extends Component {
                     <Row>
                         <Col md="12 mt-4 mb-4">
                             <ButtonGroup>
-                                {hasProfile([profileList.TECNICO, profileList.SUPERVISOR, profileList.PREVENCIONISTA]) && (<Link className="mr-2" to={`/home/empresas/${empresa.id}/tecnico`}><Button><FontAwesomeIcon icon="file-alt" /> Informes</Button></Link>)}
+                                {hasProfile([profileList.TECNICO, profileList.PREVENCIONISTA]) && (<Link className="mr-2" to={`/home/empresas/${empresa.id}/tecnico`}><Button><FontAwesomeIcon icon="file-alt" /> Informes</Button></Link>)}
+                                {hasProfile([profileList.SUPERVISOR]) && (<Link className="mr-2" to={`/home/empresas/${empresa.id}/supervisor`}><Button><FontAwesomeIcon icon="file-alt" className="mr-1" />Supervisar Informes</Button></Link>)}
                                 {hasProfile([profileList.SUPERVISOR]) && (<Link className="mr-2" to={`/home/empresas/${empresa.id}/supervisor/capacitacion`}><Button><FontAwesomeIcon icon="graduation-cap" /> Administrar Charlas</Button></Link>)}
                                 {hasProfile([profileList.EXAMINADOR]) && (<Link className="mr-2" to={`/home/empresas/${empresa.id}/examinador`}><Button><FontAwesomeIcon icon="graduation-cap" /> Charlas</Button></Link>)}
-                                
-                                {hasProfile([profileList.MEDICO, profileList.SUPERVISOR]) && (<Link to={`/home/empresas/${empresa.id}/medico`}><Button><FontAwesomeIcon icon="notes-medical" /> Visitas Medicas</Button></Link>)}
+                                {hasProfile([profileList.SUPERVISOR]) && (<Link to={`/home/empresas/${empresa.id}/supervisor/visitas-medicas`}><Button><FontAwesomeIcon icon="notes-medical" /> Admistrar Visitas Medicas</Button></Link>)}
+                                {hasProfile([profileList.MEDICO]) && (<Link to={`/home/empresas/${empresa.id}/medico`}><Button><FontAwesomeIcon icon="notes-medical" /> Visitas Medicas</Button></Link>)}
                             </ButtonGroup>
                         </Col>
                         <Col md="12">

@@ -4,6 +4,11 @@ const endpoint = '/api/informes';
 
 class InformeService {
 
+     /**
+     * findByEmpresaId
+     * @param {number} empresaId 
+     */
+
     static informeTrabajadorSave(data) {
         return new Promise((resolve, reject) => {
             Service.post(`${endpoint}/nuevo-trabajador`, data).then((data) => {
@@ -67,10 +72,27 @@ class InformeService {
             }).catch((reason) => reject(reason));
         });
     }
+    static informesTrabajadorBySupervisor(empresaId) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${endpoint}/trabajador/by-supervisor/${empresaId}`).then((data) => {
+                const obj = data.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
+    
 
     static informesInstalacionByEstado(empresaId, id) {
         return new Promise((resolve, reject) => {
             Service.get(`${endpoint}/instalacion/por-estado/${empresaId}/${id}`).then((data) => {
+                const obj = data.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
+    static informesInstalacionBySupervisor(empresaId) {
+       return new Promise((resolve, reject) => {
+        Service.get(`${endpoint}/instalacion/by-supervisor/${empresaId}`).then((data) => {
                 const obj = data.obj;
                 resolve(obj);
             }).catch((reason) => reject(reason));

@@ -2,6 +2,7 @@ import Service from './Service';
 import Capacitacion from '../../entity/Capacitacion';
 
 const endpoint = '/api/capacitaciones';
+const endpoint2 = '/api/asistencias';
 
 class CapacitacionService {
 
@@ -48,6 +49,32 @@ class CapacitacionService {
             Service.findById(`${endpoint}/asistencias`, id).then((data) => {
                 const d = data;
                 const obj = d.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
+    static registroParticipantes(data,) {
+        return new Promise((resolve, reject) => {
+            const d = {
+                ...data,
+                trabajadorId : parseInt(data.trabajadorId),
+                capacitacion : parseInt(data.capacitacion)
+            }
+            Service.post(`${endpoint2}`, d).then((da) => {
+                const obj = da.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
+    static registroAsistencia(data) {
+        return new Promise((resolve, reject) => {
+            const d = {
+                ...data,
+                id : parseInt(data.idtrabajador),
+                firmar : data.firmar
+            }
+            Service.post(`${endpoint2}/firmar`, d).then((da) => {
+                const obj = da.obj;
                 resolve(obj);
             }).catch((reason) => reject(reason));
         });

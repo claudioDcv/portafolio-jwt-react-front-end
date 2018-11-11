@@ -1,23 +1,36 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Table, CardBody, CardHeader, Row, Label, Col, Breadcrumb, BreadcrumbItem, Container, TabContent, TabPane, Nav, Card } from 'reactstrap';
+import Select from 'react-select';
+import { Table, CardBody, CardHeader, Row, Label, Col, Breadcrumb, BreadcrumbItem, Container, TabContent, TabPane, Nav, Card,  Button, Form } from 'reactstrap';
 import Menu from '../../components/Menu';
 import CapacitacionService from '../../http/service/CapacitacionService';
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import EmpresaCard from '../../components/EmpresaCard';
 import TabTitle from '../../components/TabTitle';
+import TrabajadorService from '../../http/service/TrabajadorService';
+import EmpresasService from '../../http/service/EmpresaService';
+import InformeService from '../../http/service/InformeService';
+import {profileList, getUser } from '../../common/utils';
+import UserService from '../../http/service/UserService';
+
+
+
 
 class DetalleCapacitacion extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            empresa: {},
-            capacitacion: {},
-            activeTab: '0',
-            asistentes: [],
-            asistentesActuales: 0,
+            capacitacion: [],
+            trabajadorSeleccionado:[],
+            empresa:{},
+            asistentes:[],
         };
         this.toggle = this.toggle.bind(this);
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handlerSubmit = this.handlerSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -32,7 +45,40 @@ class DetalleCapacitacion extends Component {
                 });
             });
         });
+
+        const { id } = this.props.match.params;
+        EmpresasService.findById(id).then(empresa => {
+          UserService.findAllByProfileId(profileList.SUPERVISOR_ID).then(supervisores => {
+            TrabajadorService.findAllByEmpresaId(empresa.id).then(trabajadores => {
+              this.setState({
+                empresa,
+                supervisores: supervisores.map(e => ({ value: e.id, label: e.name })),
+                trabajadores: trabajadores.map(e => ({ value: e.id, label: `${e.nombre} ${e.apellidoPaterno} ${e.apellidoMaterno}` })),
+              })
+            });
+          }
+          );
+        });
     }
+    handleChange(event) {
+        const { value, name } = event.target;
+        this.setState({ [name]: value });
+      }
+    
+      handlerSave(id) {
+        const {detalle } = this.state;
+        InformeService.insertObservacion({
+          id,
+          informeId: detalle,
+          idperson:id,
+        }).then(data => {
+          InformeService.observacionByInformeId(detalle).then(observaciones => {
+            this.setState({
+              observaciones,
+            });
+          });
+        });
+      }
 
     toggle(tab) {
         const { activeTab } = this.state;
@@ -40,9 +86,37 @@ class DetalleCapacitacion extends Component {
             this.setState({ activeTab: tab })
         }
     }
+    
+    handlerSubmit(event) {
+        event.preventDefault();
+        const { idCapacitacion } = this.props.match.params;
+        const {
+        capacitacion,
+        empresa,
+        trabajadorSeleccionado,
+        } = this.state;
+       
+          const informePersona = {
+            capacitacion: idCapacitacion,
+            trabajadorId: trabajadorSeleccionado.value,
+          };
+          CapacitacionService.registroParticipantes(informePersona).then((data) => {
+            this.props.history.push(`/home/empresas/${empresa.id}/supervisor/capacitacion/ver/${idCapacitacion}`);
+          }).catch(e => console.log(e));
+        
+      }
+    
+      disabled() {
+        const { nombre, trabajadorSeleccionado, supervisorSeleccionado } = this.state;
+        if (
+          nombre === '' ||
+          trabajadorSeleccionado === null ||
+          supervisorSeleccionado === null) return true;
+        return false;
+      }
 
     render() {
-        const { empresa, capacitacion, activeTab, asistentes, asistentesActuales } = this.state;
+        const { empresa, capacitacion, activeTab, asistentes, asistentesActuales, trabajadores, trabajadorSeleccionado  } = this.state;
         return (
             <div>
                 <Menu />
@@ -68,6 +142,30 @@ class DetalleCapacitacion extends Component {
                         </Col>
                     </Row>
                     <Row>
+                        <Col md="12">
+              <Card className="mt-4">
+                <CardHeader>Participantes</CardHeader>
+                <CardBody>
+                <Form onSubmit={this.handlerSubmit}>
+                <Row>
+                                        <Col sm="4">
+                  <Button color="primary">
+                      <FontAwesomeIcon icon="plus" /> Nueva Asistente
+                  </Button>
+                  </Col>
+                  
+                                        <Col sm="8">
+                  <Select
+                            value={trabajadorSeleccionado}
+                            onChange={(value) => this.handleChange({ target: { value, name: 'trabajadorSeleccionado' } })}
+                            options={trabajadores}
+                          />
+                          </Col>
+                        </Row>
+                    </Form>
+                </CardBody>
+              </Card>
+            </Col>
                         <Col md="12 mt-4">
                             <Nav tabs>
                                 <TabTitle title="Asignadas" activeTab={activeTab} onClick={this.toggle} n="0" />

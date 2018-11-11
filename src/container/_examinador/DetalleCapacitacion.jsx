@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Table, CardBody, CardHeader, Row, Label, Col, Breadcrumb, BreadcrumbItem, Container, TabContent, TabPane, Nav, Card } from 'reactstrap';
+import { Table, CardBody, CardHeader, Row, Label, Col, Breadcrumb, BreadcrumbItem, Container, TabContent, TabPane, Nav, Card, Form, FormGroup, Input, Button } from 'reactstrap';
 import Menu from '../../components/Menu';
 import CapacitacionService from '../../http/service/CapacitacionService';
 
@@ -18,6 +18,8 @@ class DetalleCapacitacion extends Component {
             asistentesActuales: 0,
         };
         this.toggle = this.toggle.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handlerSubmit = this.handlerSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -41,8 +43,28 @@ class DetalleCapacitacion extends Component {
         }
     }
 
+  handleChange(event) {
+    const { value, name } = event.target;
+    this.setState({ [name]: value });
+  }
+
+    handlerSubmit(event) {
+        event.preventDefault();
+        const {
+            idtrabajador,
+            firma,
+        } = this.state;
+       
+          const asistencia = {
+            idtrabajador: idtrabajador,
+            firmar: firma,
+          };
+          CapacitacionService.registroAsistencia(asistencia);
+        
+      }
+
     render() {
-        const { empresa, capacitacion, activeTab, asistentes, asistentesActuales } = this.state;
+        const { empresa, capacitacion, activeTab, asistentes, asistentesActuales, firma, id } = this.state;
         return (
             <div>
                 <Menu />
@@ -94,7 +116,15 @@ class DetalleCapacitacion extends Component {
                                                             <td>{e.nombre}</td>
                                                             <td>{e.apellidoPaterno}</td>
                                                             <td>{e.apellidoMaterno}</td>
-                                                            <td>{e.firma ? 'Disponible' : 'No disponible'}</td>
+                                                            <td>{e.firma ? 'Confirmada' : 
+                                                            <Form onSubmit={this.handlerSubmit}>
+                                                                <FormGroup col={10}>
+                                                                    <Label for="exampleEmail">Registrar Asistencia</Label>
+                                                                    <Input type="text" placeholder="Ingrese firma" name="firma" onChange={this.handleChange}/>
+                                                                    <Input name="idtrabajador"  hidden value={e.trabajadorId} />
+                                                                </FormGroup>
+                                                                <Button col={2} color="info">Registrar</Button>
+                                                            </Form>}</td>
                                                         </tr>
                                                     ))}
                                                 </tbody>
