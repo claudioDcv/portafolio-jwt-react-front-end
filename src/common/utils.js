@@ -60,6 +60,7 @@ export const profileList = {
     SUPERVISOR_ID: 7,
     EXAMINADOR_ID: 6,
     MEDICO_ID: 3,
+    PREVENCIONISTA_ID: 4,
 };
 
 export const fechaFormateada = (date) => {

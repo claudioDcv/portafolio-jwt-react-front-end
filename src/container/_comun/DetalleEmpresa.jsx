@@ -63,7 +63,8 @@ class DetalleEmpresa extends Component {
                     <Row>
                         <Col md="12 mt-4 mb-4">
                             <ButtonGroup>
-                                {hasProfile([profileList.TECNICO, profileList.PREVENCIONISTA]) && (<Link className="mr-2" to={`/home/empresas/${empresa.id}/tecnico`}><Button><FontAwesomeIcon icon="file-alt" /> Informes</Button></Link>)}
+                                {hasProfile([profileList.PREVENCIONISTA]) && (<Link className="mr-2" to={`/home/empresas/${empresa.id}/prevencionista`}><Button><FontAwesomeIcon icon="file-alt" /> Informes a Revisar</Button></Link>)}
+                                {hasProfile([profileList.TECNICO]) && (<Link className="mr-2" to={`/home/empresas/${empresa.id}/tecnico`}><Button><FontAwesomeIcon icon="file-alt" /> Informes</Button></Link>)}
                                 {hasProfile([profileList.SUPERVISOR]) && (<Link className="mr-2" to={`/home/empresas/${empresa.id}/supervisor`}><Button><FontAwesomeIcon icon="file-alt" className="mr-1" />Supervisar Informes</Button></Link>)}
                                 {hasProfile([profileList.SUPERVISOR]) && (<Link className="mr-2" to={`/home/empresas/${empresa.id}/supervisor/capacitacion`}><Button><FontAwesomeIcon icon="graduation-cap" /> Administrar Charlas</Button></Link>)}
                                 {hasProfile([profileList.EXAMINADOR]) && (<Link className="mr-2" to={`/home/empresas/${empresa.id}/examinador`}><Button><FontAwesomeIcon icon="graduation-cap" /> Charlas</Button></Link>)}

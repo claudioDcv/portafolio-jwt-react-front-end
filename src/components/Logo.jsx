@@ -1,11 +1,11 @@
 import React from 'react';
 
 import './Logo.css';
+import logoSafe from '../common/logoSafe.png';
 
 const Logo = () => (
     <div className="safe-logo">
-        <div>SAFE</div>
-        <span>Seguridad {'&'} Confianza</span>
+        <img src={logoSafe} />
     </div>
 );
 

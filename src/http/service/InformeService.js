@@ -108,6 +108,36 @@ class InformeService {
             }).catch((reason) => reject(reason));
         });
     }
+
+    static asignarPrevencionista(data) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${endpoint}/asignar-prevencionista/${data.idDetalle}/${data.idPrevencionista}`).then((data) => {
+                const obj = data.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
+
+
+    // "/instalacion/prevencionista/{empresa}/{estado}"
+    static getAllInformeInstalacionyByEstadoPrevencionistaId(empresaId, confirmacionPreve) {
+            return new Promise((resolve, reject) => {
+                Service.get(`${endpoint}/instalacion/prevencionista/${empresaId}/${confirmacionPreve}`).then((data) => {
+                    const obj = data.obj;
+                    resolve(obj);
+                }).catch((reason) => reject(reason));
+            });
+        }
+
+    //"/trabajador/prevencionista/{empresa}/{estado}"
+    static getAllInformeTrabajadorByEstadoPrevencionistaId(empresaId, confirmacionPreve) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${endpoint}/trabajador/prevencionista/${empresaId}/${confirmacionPreve}`).then((data) => {
+                const obj = data.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
 }
 
 export default InformeService;
