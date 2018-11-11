@@ -36,7 +36,6 @@ import EmpresaCard from '../../components/EmpresaCard';
 class CharlaNuevo extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
 
       id: null,
@@ -47,7 +46,6 @@ class CharlaNuevo extends Component {
       trabajadores: [],
       supervisores: [],
       empresa: [],
-
       supervisorSeleccionado: null,
       instalacionSeleccionado: null,
       trabajadorSeleccionado: null,
@@ -132,23 +130,21 @@ class CharlaNuevo extends Component {
       descripcion,
       fechaRealizacion,
       supervisorSeleccionado,
-      trabajadorSeleccionado,
       asistentesMinimos,
       nombre,
       empresa,
     } = this.state;
    
       const informePersona = {
-        id: null,
         asistentesMinimos,
         nombre,
         descripcion,
         examinador: supervisorSeleccionado.value,
         fechaRealizacion: fechaRealizacion.toJSON(),
-        empresa: trabajadorSeleccionado.value,
+        empresa: empresa.id,
       };
       CapacitacionService.nuevacharlaSave(informePersona).then((data) => {
-        this.props.history.push(`/home/empresas/${empresa.id}/supervisor/capacitacion/${data}`);
+        this.props.history.push(`/home/empresas/${empresa.id}/supervisor/capacitacion/ver/${data}`);
       }).catch(e => console.log(e));
     
   }
@@ -217,43 +213,22 @@ class CharlaNuevo extends Component {
                       <Col md={3}>
                         <FormGroup>
                           <Label for="exampleSelect">asistentesMinimos</Label>
-                          <Input type="number" placeholder="Ingrese titulo de informe" name="asistentesMinimos" value={asistentesMinimos} onChange={this.handleChange} />
+                          <Input type="number" placeholder="Ingrese asistentes" name="asistentesMinimos" value={asistentesMinimos} onChange={this.handleChange} />
                         </FormGroup>
                       </Col>
                       <Col md={6}>
                         <FormGroup>
                           <Label for="exampleSelect">nombre</Label>
-                          <Input maxLength={100} placeholder="Ingrese titulo de informe" name="nombre" value={nombre} onChange={this.handleChange} />
+                          <Input maxLength={100} placeholder="Ingrese Nombre" name="nombre" value={nombre} onChange={this.handleChange} />
                         </FormGroup>
                       </Col>
                       <Col md={12}>
                         <FormGroup>
                           <Label for="exampleSelect">descripcion</Label>
-                          <Input maxLength={2000} placeholder="Ingrese titulo de informe" type="textarea" name="descripcion" value={description} onChange={this.handleChange} />
+                          <Input maxLength={2000} placeholder="Ingrese Descripcion" type="textarea" name="descripcion" value={description} onChange={this.handleChange} />
                         </FormGroup>
                       </Col>
-                      <Col md={3}>
-                        {
-                          tipo === 'informe-instalacion' ? (<FormGroup>
-                            <Label for="exampleSelect">Empresas</Label>
-                            <Select
-                              value={instalacionSeleccionado}
-                              onChange={(value) => this.handleChange({ target: { value, name: 'instalacionSeleccionado' } })}
-                              options={instalaciones}
-                            />
-                          </FormGroup>) : (
-                              <FormGroup>
-                                <Label for="exampleSelect">Empresas</Label>
-                                <Select
-                                  value={trabajadorSeleccionado}
-                                  onChange={(value) => this.handleChange({ target: { value, name: 'trabajadorSeleccionado' } })}
-                                  options={trabajadores}
-                                />
-                              </FormGroup>
-                            )
-                        }
-                      </Col>
-                      <Col md={3}>
+                      <Col md={6}>
                         <FormGroup>
                           <Label for="exampleSelect">Examinador</Label>
                           <Select

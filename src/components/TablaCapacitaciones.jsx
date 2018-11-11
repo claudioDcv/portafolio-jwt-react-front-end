@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { hasProfile, profileList } from '../common/utils';
 
 const TablaCapacitaciones = ({ capacitaciones, empresaId }) => (
     <Table>
@@ -21,7 +22,12 @@ const TablaCapacitaciones = ({ capacitaciones, empresaId }) => (
                     <td>{e.asistentesMinimos}</td>
                     <td>{e.fechaRealizacionFormateada}</td>
                     <td>
-                        {empresaId && (
+                        {hasProfile([profileList.SUPERVISOR]) && empresaId && (
+                            <Link to={`/home/empresas/${empresaId}/supervisor/capacitacion/ver/${e.id}`}>
+                                <Button color="success" className="mr-2">Asistentes</Button>
+                            </Link>
+                        )}
+                        {hasProfile([profileList.EXAMINADOR]) && empresaId && (
                             <Link to={`/home/empresas/${empresaId}/examinador/capacitacion/${e.id}`}>
                                 <Button color="success" className="mr-2">Asistentes</Button>
                             </Link>

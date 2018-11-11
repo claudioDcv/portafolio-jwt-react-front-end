@@ -25,7 +25,7 @@ import CapacitacionService from '../../http/service/CapacitacionService';
 import EmpresaCard from '../../components/EmpresaCard';
 import TablaCapacitaciones from '../../components/TablaCapacitaciones';
 
-class MisVisitasMedicas extends Component {
+class CharlasSupervisor extends Component {
 
     constructor(props) {
         super(props);
@@ -88,11 +88,6 @@ class MisVisitasMedicas extends Component {
                           <FontAwesomeIcon icon="plus" /> Crear Charlas
                         </Button>
                       </Link>
-                      <Link to={`/home/empresas/${empresa.id}/supervisor/capacitacion/asignar-charla`} id="TooltipInstall">
-                        <Button color="primary">
-                          <FontAwesomeIcon icon="plus" /> Asignar Charlas
-                        </Button>
-                      </Link>
                     </Col>
                   </Row>
                 </CardHeader>
@@ -110,4 +105,4 @@ class MisVisitasMedicas extends Component {
     }
 }
 
-export default MisVisitasMedicas;
+export default CharlasSupervisor;
