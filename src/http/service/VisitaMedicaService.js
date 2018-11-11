@@ -12,7 +12,7 @@ class VisitaMedicaService {
      */
     static findByEmpresaIdConfirmacion(empresaId, confirmacion) {
         return new Promise((resolve, reject) => {
-            Service.post(endpoint, {
+            Service.post(`${endpoint}/mis-visitas-medicas-medico`, {
                 empresaId,
                 confirmacion,
             }).then((data) => {

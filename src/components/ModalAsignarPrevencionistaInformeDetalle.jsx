@@ -54,7 +54,7 @@ class ModalAsignarPrevencionistaInformeDetalle extends React.Component {
       <div>
         <Button color="info" size="sm" onClick={this.toggle}>{this.props.buttonLabel}</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-          <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Asignar Prevencionista</ModalHeader>
           <ModalBody>
           <Label for="exampleSelect">Instalaciones</Label>
             <Select
