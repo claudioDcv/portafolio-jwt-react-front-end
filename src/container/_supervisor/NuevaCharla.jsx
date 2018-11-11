@@ -13,9 +13,7 @@ import {
   Row,
   Col,
   Button,
-  Input,
-  Table,
-  CardBody
+  Input
 } from "reactstrap";
 import Select from 'react-select';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,9 +21,8 @@ import Menu from "../../components/Menu";
 import DatePicker from 'react-datepicker';
 import moment from "moment";
 
-import { hasProfile, profileList, getUser } from '../../common/utils';
+import { profileList } from '../../common/utils';
 import UserService from '../../http/service/UserService';
-import InstalacionService from '../../http/service/InstalacionService';
 import EmpresaService from '../../http/service/EmpresaService';
 import EmpresasService from '../../http/service/EmpresaService';
 import InformeService from '../../http/service/InformeService';
@@ -92,31 +89,31 @@ class CharlaNuevo extends Component {
           empresa,
           supervisores: supervisores.map(e => ({ value: e.id, label: e.name })),
         }, () => {
-            EmpresaService.findAll().then(trabajadores => {
-              this.setState({
-                trabajadores: trabajadores.map(e => ({ value: e.id, label: `${e.nombre}` })),
-              }, () => {
-                if (informeId) {
-                  InformeService.informeTrabajadorByID(informeId).then(informe => {
-                    InformeService.observacionByInformeId(informe.detalle).then(observaciones => {
-                      this.setState({
-                        detalle: informe.detalle,
-                        informeData: informe,
-                        observaciones,
-                        informeId,
-                        id: informe.id,
-                        solicitarRevision: informe.solicitarRevision,
-                        nombre: informe.nombre,
-                        supervisorSeleccionado: { value: informe.supervisor.id, label: informe.supervisor.name },
-                        trabajadorSeleccionado: { value: informe.trabajador.id, label: informe.trabajador.nombre },
-                        fechaRealizacion: moment(informe.fechaRealizacion),
-                      });
+          EmpresaService.findAll().then(trabajadores => {
+            this.setState({
+              trabajadores: trabajadores.map(e => ({ value: e.id, label: `${e.nombre}` })),
+            }, () => {
+              if (informeId) {
+                InformeService.informeTrabajadorByID(informeId).then(informe => {
+                  InformeService.observacionByInformeId(informe.detalle).then(observaciones => {
+                    this.setState({
+                      detalle: informe.detalle,
+                      informeData: informe,
+                      observaciones,
+                      informeId,
+                      id: informe.id,
+                      solicitarRevision: informe.solicitarRevision,
+                      nombre: informe.nombre,
+                      supervisorSeleccionado: { value: informe.supervisor.id, label: informe.supervisor.name },
+                      trabajadorSeleccionado: { value: informe.trabajador.id, label: informe.trabajador.nombre },
+                      fechaRealizacion: moment(informe.fechaRealizacion),
                     });
-                  }).catch(e => this.props.history.push(`/home/empresas/${empresa.id}/tecnico/informe-persona`));
+                  });
+                }).catch(() => this.props.history.push(`/home/empresas/${empresa.id}/tecnico/informe-persona`));
 
-                }
-              })
-            });
+              }
+            })
+          });
         });
       }
 
@@ -134,19 +131,19 @@ class CharlaNuevo extends Component {
       nombre,
       empresa,
     } = this.state;
-   
-      const informePersona = {
-        asistentesMinimos,
-        nombre,
-        descripcion,
-        examinador: supervisorSeleccionado.value,
-        fechaRealizacion: fechaRealizacion.toJSON(),
-        empresa: empresa.id,
-      };
-      CapacitacionService.nuevacharlaSave(informePersona).then((data) => {
-        this.props.history.push(`/home/empresas/${empresa.id}/supervisor/capacitacion/ver/${data}`);
-      }).catch(e => console.log(e));
-    
+
+    const informePersona = {
+      asistentesMinimos,
+      nombre,
+      descripcion,
+      examinador: supervisorSeleccionado.value,
+      fechaRealizacion: fechaRealizacion.toJSON(),
+      empresa: empresa.id,
+    };
+    CapacitacionService.nuevacharlaSave(informePersona).then((data) => {
+      this.props.history.push(`/home/empresas/${empresa.id}/supervisor/capacitacion/ver/${data}`);
+    }).catch(e => console.log(e));
+
   }
 
   disabled() {
@@ -163,7 +160,7 @@ class CharlaNuevo extends Component {
   }
 
   handlerSave(nombre) {
-    const { id, detalle } = this.state;
+    const { detalle } = this.state;
     InformeService.insertObservacion({
       nombre,
       informeId: detalle,
@@ -182,28 +179,28 @@ class CharlaNuevo extends Component {
   }
 
   render() {
-    const { asistentesMinimos, tipo, trabajadorSeleccionado, trabajadores, description, nombre, supervisores, instalaciones, instalacionSeleccionado, empresa, supervisorSeleccionado, fechaRealizacion, id } = this.state;
+    const { asistentesMinimos, description, nombre, supervisores, empresa, supervisorSeleccionado, fechaRealizacion, id } = this.state;
     return (
       <div>
         <Menu />
         <Container>
           <Row>
             <Col>
-            <Breadcrumb>
-                 <BreadcrumbItem>
-                   <Link to="/home">Home</Link>
-                </BreadcrumbItem>
-              <BreadcrumbItem>
-               <Link to="/home/empresas">Empresas</Link>
-                </BreadcrumbItem>
-                   <BreadcrumbItem>
-                 <Link to={`/home/empresas/${empresa.id}`}>{empresa.nombre}</Link>
+              <Breadcrumb>
+                <BreadcrumbItem>
+                  <Link to="/home">Home</Link>
                 </BreadcrumbItem>
                 <BreadcrumbItem>
-                 <Link to={`/home/empresas/${empresa.id}/supervisor/capacitacion`}>Capacitaciones</Link>
+                  <Link to="/home/empresas">Empresas</Link>
+                </BreadcrumbItem>
+                <BreadcrumbItem>
+                  <Link to={`/home/empresas/${empresa.id}`}>{empresa.nombre}</Link>
+                </BreadcrumbItem>
+                <BreadcrumbItem>
+                  <Link to={`/home/empresas/${empresa.id}/supervisor/capacitacion`}>Capacitaciones</Link>
                 </BreadcrumbItem>
                 <BreadcrumbItem active>Nueva-charla</BreadcrumbItem>
-             </Breadcrumb>
+              </Breadcrumb>
               <EmpresaCard empresa={empresa} />
               <Card className="mt-4">
                 <CardHeader>
@@ -212,19 +209,19 @@ class CharlaNuevo extends Component {
                     <Row>
                       <Col md={3}>
                         <FormGroup>
-                          <Label for="exampleSelect">asistentesMinimos</Label>
-                          <Input type="number" placeholder="Ingrese asistentes" name="asistentesMinimos" value={asistentesMinimos} onChange={this.handleChange} />
+                          <Label for="exampleSelect">Asistentes Minimos</Label>
+                          <Input type="number" min="1" placeholder="Ingrese asistentes" name="asistentesMinimos" value={asistentesMinimos} onChange={this.handleChange} />
                         </FormGroup>
                       </Col>
                       <Col md={6}>
                         <FormGroup>
-                          <Label for="exampleSelect">nombre</Label>
+                          <Label for="exampleSelect">Nombre</Label>
                           <Input maxLength={100} placeholder="Ingrese Nombre" name="nombre" value={nombre} onChange={this.handleChange} />
                         </FormGroup>
                       </Col>
                       <Col md={12}>
                         <FormGroup>
-                          <Label for="exampleSelect">descripcion</Label>
+                          <Label for="exampleSelect">Descripción</Label>
                           <Input maxLength={2000} placeholder="Ingrese Descripcion" type="textarea" name="descripcion" value={description} onChange={this.handleChange} />
                         </FormGroup>
                       </Col>

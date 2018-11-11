@@ -12,9 +12,11 @@ class Capacitacion {
             examinador: null,
             empresa: null,
             fechaRealizacion: 0,
+            estado: 0,
             fechaRealizacionFormateada: '',
     }) {
         this.id = props.id;
+        this.estado = props.estado;
         this.nombre = props.nombre;
         this.descripcion = props.descripcion;
         this.asistentesMinimos = props.asistentesMinimos;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Table, CardBody, CardHeader, Row, Label, Col, Breadcrumb, BreadcrumbItem, Container, TabContent, TabPane, Nav, Card, Form, FormGroup, Input, Button } from 'reactstrap';
+import { Table, CardBody, CardHeader, Row, Label, Col, Breadcrumb, BreadcrumbItem, Container, TabContent, TabPane, Nav, Card, Button } from 'reactstrap';
 import Menu from '../../components/Menu';
 import CapacitacionService from '../../http/service/CapacitacionService';
 
@@ -19,10 +19,15 @@ class DetalleCapacitacion extends Component {
         };
         this.toggle = this.toggle.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handlerSubmit = this.handlerSubmit.bind(this);
+        this.registrarAsistencia = this.registrarAsistencia.bind(this);
+        this.handlerCerrarCapacitacion = this.handlerCerrarCapacitacion.bind(this);
     }
 
     componentDidMount() {
+        this.refrescarVista();
+    }
+
+    refrescarVista() {
         const { idCapacitacion } = this.props.match.params;
         CapacitacionService.findById(idCapacitacion).then(capacitacion => {
             CapacitacionService.asistentesByIdCapacication(idCapacitacion).then((asistentes) => {
@@ -36,6 +41,13 @@ class DetalleCapacitacion extends Component {
         });
     }
 
+    refrescarLista() {
+        const { idCapacitacion } = this.props.match.params;
+        CapacitacionService.asistentesByIdCapacication(idCapacitacion).then((asistentes) => {
+            this.setState({ asistentes });
+        });
+    }
+
     toggle(tab) {
         const { activeTab } = this.state;
         if (activeTab !== tab) {
@@ -43,28 +55,34 @@ class DetalleCapacitacion extends Component {
         }
     }
 
-  handleChange(event) {
-    const { value, name } = event.target;
-    this.setState({ [name]: value });
-  }
+    handleChange(event) {
+        const { value, name } = event.target;
+        this.setState({ [name]: value });
+    }
 
-    handlerSubmit(event) {
-        event.preventDefault();
-        const {
-            idtrabajador,
-            firma,
-        } = this.state;
-       
-          const asistencia = {
-            idtrabajador: idtrabajador,
-            firmar: firma,
-          };
-          CapacitacionService.registroAsistencia(asistencia);
-        
-      }
+    registrarAsistencia(id) {
+        return () => {
+            const firmar = prompt("Ingrese Firma");
+            const asistencia = { id, firmar };
+            if (!firmar) {
+                alert('firma es requerida');
+            } else {
+                CapacitacionService.registroAsistencia(asistencia).then(() => this.refrescarLista());
+            }
+        };
+    }
+
+    handlerCerrarCapacitacion() {
+        const { idCapacitacion } = this.props.match.params;
+        CapacitacionService.cerrarCapacitacion(idCapacitacion).then(() => {
+            this.refrescarVista();
+        }).catch(e => {
+            alert(e);
+        });
+    }
 
     render() {
-        const { empresa, capacitacion, activeTab, asistentes, asistentesActuales, firma, id } = this.state;
+        const { empresa, capacitacion, activeTab, asistentes, asistentesActuales } = this.state;
         return (
             <div>
                 <Menu />
@@ -116,15 +134,13 @@ class DetalleCapacitacion extends Component {
                                                             <td>{e.nombre}</td>
                                                             <td>{e.apellidoPaterno}</td>
                                                             <td>{e.apellidoMaterno}</td>
-                                                            <td>{e.firma ? 'Confirmada' : 
-                                                            <Form onSubmit={this.handlerSubmit}>
-                                                                <FormGroup col={10}>
-                                                                    <Label for="exampleEmail">Registrar Asistencia</Label>
-                                                                    <Input type="text" placeholder="Ingrese firma" name="firma" onChange={this.handleChange}/>
-                                                                    <Input name="idtrabajador"  hidden value={e.trabajadorId} />
-                                                                </FormGroup>
-                                                                <Button col={2} color="info">Registrar</Button>
-                                                            </Form>}</td>
+                                                            <td>{e.firma ? (
+                                                                <span className="text-success">Firmado</span>
+                                                            ) : (capacitacion.asistentesMinimos > asistentesActuales
+                                                                ? 'No se puede realizar'
+                                                                : <Button col={2} color="info" onClick={this.registrarAsistencia(e.asistenciaId)}>Firmar</Button>
+                                                                )
+                                                            }</td>
                                                         </tr>
                                                     ))}
                                                 </tbody>
@@ -141,23 +157,35 @@ class DetalleCapacitacion extends Component {
                                                         <CardHeader>{capacitacion.nombre}</CardHeader>
                                                         <CardBody>
                                                             <Row>
-                                                                <Col md="4">
+                                                                <Col md="3">
                                                                     <Label for="exampleEmail">Minimo Asistencia</Label>
                                                                     <div className="display-data">{capacitacion.asistentesMinimos}</div>
                                                                 </Col>
-                                                                <Col md="4">
+                                                                <Col md="3">
                                                                     <Label for="exampleEmail">Inscritos</Label>
                                                                     <div className="display-data">{asistentesActuales}</div>
                                                                 </Col>
-                                                                <Col md="4">
+                                                                <Col md="3">
                                                                     <Label for="exampleEmail">Estado</Label>
                                                                     <div className="display-data">{capacitacion.asistentesMinimos > asistentesActuales
                                                                         ? 'No se puede realizar'
                                                                         : 'Correcto'
                                                                     }</div>
                                                                 </Col>
+                                                                <Col md="3">
+                                                                    {capacitacion.estado === 1 ? (
+                                                                        <span>
+                                                                            <Label for="exampleEmail">Estado</Label>
+                                                                            <div className="display-data">Capacitacion Cerrada</div>
+                                                                        </span>
+                                                                    ) : (
+                                                                            <Button color="danger" block className="button-form" onClick={this.handlerCerrarCapacitacion}>
+                                                                                Cerrar Charla
+                                                                        </Button>
+                                                                        )}
+                                                                </Col>
                                                             </Row>
-                                                            <Row>
+                                                            <Row className="mt-4">
                                                                 <Col md="12">
                                                                     <Label for="descripcion">Descripción</Label>
                                                                     <div dangerouslySetInnerHTML={{ __html: capacitacion.descripcion }} />

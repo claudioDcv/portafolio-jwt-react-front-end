@@ -24,9 +24,7 @@ class CapacitacionService {
 
     static findByEmpresaIdParaSupervisor(empresaId) {
         return new Promise((resolve, reject) => {
-            Service.get(`${endpoint}/supervisor/${empresaId}`, {
-                empresaId,
-            }).then((data) => {
+            Service.get(`${endpoint}/supervisor/${empresaId}`).then((data) => {
                 const d = data;
                 const obj = d.obj.map(e => new Capacitacion(e));
                 resolve(obj);
@@ -68,12 +66,7 @@ class CapacitacionService {
     }
     static registroAsistencia(data) {
         return new Promise((resolve, reject) => {
-            const d = {
-                ...data,
-                id : parseInt(data.idtrabajador),
-                firmar : data.firmar
-            }
-            Service.post(`${endpoint2}/firmar`, d).then((da) => {
+            Service.post(`${endpoint2}/firmar`, data).then((da) => {
                 const obj = da.obj;
                 resolve(obj);
             }).catch((reason) => reject(reason));
@@ -82,6 +75,16 @@ class CapacitacionService {
     static nuevacharlaSave(data) {
         return new Promise((resolve, reject) => {
             Service.post(`${endpoint}`, data).then((data) => {
+                const obj = data.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
+
+    // {{API_HOST}}/api/capacitaciones/cerrar-capacitacion/1
+    static cerrarCapacitacion(capacitacionId) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${endpoint}/cerrar-capacitacion/${capacitacionId}`).then(data => {
                 const obj = data.obj;
                 resolve(obj);
             }).catch((reason) => reject(reason));

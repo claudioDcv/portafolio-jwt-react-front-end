@@ -29,7 +29,7 @@ const TablaCapacitaciones = ({ capacitaciones, empresaId }) => (
                         )}
                         {hasProfile([profileList.EXAMINADOR]) && empresaId && (
                             <Link to={`/home/empresas/${empresaId}/examinador/capacitacion/${e.id}`}>
-                                <Button color="success" className="mr-2">Asistentes</Button>
+                                <Button color="info" className="mr-2">Detalle</Button>
                             </Link>
                         )}
                     </td>
