@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 
+import ModalPrevencionistaInformes from '../../components/ModalPrevencionistaInformes';
+
 import EmpresasService from '../../http/service/EmpresaService';
 import InformeService from '../../http/service/InformeService';
 
@@ -131,7 +133,7 @@ class ListadoInformesAsignado extends Component {
                                                     <td>{e.id}</td>
                                                     <td>{e.nombre}</td>
                                                     <th>
-                                                        <Button color="info">Ver</Button>
+                                                        <ModalPrevencionistaInformes informe={e} buttonLabel="Ver" />
                                                     </th>
                                                 </tr>
                                             ))}
