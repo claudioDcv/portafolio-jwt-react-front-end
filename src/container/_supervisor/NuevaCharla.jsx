@@ -94,34 +94,6 @@ class CharlaNuevo extends Component {
           empresa,
           supervisores: supervisores.map(e => ({ value: e.id, label: e.name })),
         }, () => {
-          // TODO LO DEMAS
-          if (tipo === 'informe-instalacion') {
-            InstalacionService.findAllByEmpresaId(empresa.id).then(instalaciones => {
-
-              this.setState({
-                instalaciones: instalaciones.map(e => ({ value: e.id, label: `${e.nombre}` })),
-              }, () => {
-                if (informeId) {
-                  InformeService.informeInstalacionByID(informeId).then(informe => {
-                    InformeService.observacionByInformeId(informe.detalle).then(observaciones => {
-                      this.setState({
-                        informeData: informe,
-                        detalle: informe.detalle,
-                        observaciones,
-                        informeId,
-                        id: informe.id,
-                        solicitarRevision: informe.solicitarRevision,
-                        nombre: informe.nombre,
-                        supervisorSeleccionado: { value: informe.supervisor.id, label: informe.supervisor.name },
-                        instalacionSeleccionado: { value: informe.instalacion.id, label: informe.instalacion.nombre },
-                        fechaRealizacion: moment(informe.fechaRealizacion),
-                      });
-                    });
-                  }).catch(e => this.props.history.push(`/home/empresas/${empresa.id}/tecnico/informe-instalacion`));
-                }
-              })
-            });
-          } else {
             EmpresaService.findAll().then(trabajadores => {
               this.setState({
                 trabajadores: trabajadores.map(e => ({ value: e.id, label: `${e.nombre}` })),
@@ -147,10 +119,6 @@ class CharlaNuevo extends Component {
                 }
               })
             });
-
-
-          }
-          // FIN A TODO LO DEMAS
         });
       }
 
