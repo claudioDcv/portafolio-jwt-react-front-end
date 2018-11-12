@@ -89,6 +89,6 @@ label {
   text-overflow: ellipsis;
 }
 
-.botones-seleccion-de-listado-informes .btn-success:disabled {
+.botones-seleccion-de-listado-informes button:disabled {
   opacity: 1;
 }

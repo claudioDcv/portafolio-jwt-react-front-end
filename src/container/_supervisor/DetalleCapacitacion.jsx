@@ -220,7 +220,7 @@ class DetalleCapacitacion extends Component {
                                             <Row>
                                                 <Col md="12 mt-4 mb-4">
                                                     <Card>
-                                                        <CardHeader>{capacitacion.nombre}</CardHeader>
+                                                        <CardHeader>{capacitacion.id}) {capacitacion.nombre}</CardHeader>
                                                         <CardBody>
                                                             <Row>
                                                                 <Col md="4">

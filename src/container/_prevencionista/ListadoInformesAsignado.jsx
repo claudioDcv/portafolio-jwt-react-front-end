@@ -105,14 +105,14 @@ class ListadoInformesAsignado extends Component {
                                 <CardHeader>
                                     <CardTitle>Informe</CardTitle>
                                     <div>
-                                        <Button className="mr-1 mb-1" color={confirmacionPreve === 0 && tipoInforme === 'trabajador' ? 'info' : ''} onClick={this.listar('trabajador', 0)}>Trabajadores Aprobados</Button>
+                                        <Button className="mr-1 mb-1" color={confirmacionPreve === 0 && tipoInforme === 'trabajador' ? 'info' : ''} onClick={this.listar('trabajador', 0)}>Trabajadores Pendientes</Button>
                                         <Button className="mr-1 mb-1" color={confirmacionPreve === -1 && tipoInforme === 'trabajador' ? 'danger' : ''} onClick={this.listar('trabajador', -1)}>Trabajadores Rechazados</Button>
                                         <Button color={confirmacionPreve === 1 && tipoInforme === 'trabajador' ? 'success' : ''} onClick={this.listar('trabajador', 1)}>Trabajadores Aprobados</Button>
 
                                     </div>
 
                                     <div className="mt-2">
-                                        <Button className="mr-1 mb-1" color={confirmacionPreve === 0 && tipoInforme === 'instalacion' ? 'info' : ''} onClick={this.listar('instalacion', 0)}>Instalaciones Aprobados</Button>
+                                        <Button className="mr-1 mb-1" color={confirmacionPreve === 0 && tipoInforme === 'instalacion' ? 'info' : ''} onClick={this.listar('instalacion', 0)}>Instalaciones Pendientes</Button>
                                         <Button className="mr-1 mb-1" color={confirmacionPreve === -1 && tipoInforme === 'instalacion' ? 'danger' : ''} onClick={this.listar('instalacion', -1)}>Instalaciones  Rechazados</Button>
                                         <Button color={confirmacionPreve === 1 && tipoInforme === 'instalacion' ? 'success' : ''} onClick={this.listar('instalacion', 1)}>Instalaciones Aprobados</Button>
                                     </div>
@@ -133,7 +133,9 @@ class ListadoInformesAsignado extends Component {
                                                     <td>{e.id}</td>
                                                     <td>{e.nombre}</td>
                                                     <th>
-                                                        <ModalPrevencionistaInformes informe={e} buttonLabel="Ver" />
+                                                        <ModalPrevencionistaInformes
+                                                            informe={e} buttonLabel="Ver"
+                                                        />
                                                     </th>
                                                 </tr>
                                             ))}

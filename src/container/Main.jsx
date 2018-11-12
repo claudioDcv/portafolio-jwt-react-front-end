@@ -10,6 +10,8 @@ import ListadoEmpresa from './_comun/ListadoEmpresa';
 import DetalleEmpresa from './_comun/DetalleEmpresa';
 
 import MisVisitasMedicas from './_medico/MisVisitasMedicas';
+import VisitaMedica from './_medico/VisitaMedica';
+
 import SupervisarVisitasMedicas from './_supervisor/SupervisarVisitasMedicas';
 import NuevaVisitaMedica from './_supervisor/NuevaVisitaMedica';
 
@@ -46,6 +48,8 @@ class Main extends Component {
           <PrivateRoute exact path="/home/empresas" component={ListadoEmpresa} />
           <PrivateRoute exact path="/home/empresas/:id" component={DetalleEmpresa} />
           <PrivateRoute exact path="/home/empresas/:id/medico" component={MisVisitasMedicas} />
+          <PrivateRoute exact path="/home/empresas/:id/medico/:visitaMedicaId" component={VisitaMedica} />
+
           <PrivateRoute exact path="/home/empresas/:id/examinador" component={MisCharlas} />
           <PrivateRoute exact path="/home/empresas/:id/examinador/capacitacion/:idCapacitacion" component={DetalleCapacitacion} />
           

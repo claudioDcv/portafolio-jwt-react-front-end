@@ -20,6 +20,15 @@ class TrabajadorService {
             }).catch((reason) => reject(reason));
         });
     }
+
+    // /en-empresa-con-riesgo/{empresaId}
+    static findAllTrabajadoresRiesgoByEmpresaId(empresaId) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${endpoint}/en-empresa-con-riesgo/${empresaId}`).then((data) => {
+                resolve(data.obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
 }
 
 export default TrabajadorService;

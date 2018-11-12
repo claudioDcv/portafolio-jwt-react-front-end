@@ -138,6 +138,35 @@ class InformeService {
             }).catch((reason) => reject(reason));
         });
     }
+
+    //recomendacion id
+    static agregarRecomendacionParaObservacionPorPreve(data) {
+        return new Promise((resolve, reject) => {
+            Service.post(`${endpoint}/observaciones/recomendaciones`, data).then((data) => {
+                const da = data.obj;
+                resolve(da);
+            }).catch((reason) => reject(reason));
+        });
+    }
+
+    static rechazarInformeDetalle(informeDetalleId) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${endpoint}/rechazar/${informeDetalleId}`).then((data) => {
+                const obj = data.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
+
+    static aprobarInformeDetalle(informeDetalleId) {
+        return new Promise((resolve, reject) => {
+            Service.get(`${endpoint}/aprobar/${informeDetalleId}`).then((data) => {
+                const obj = data.obj;
+                resolve(obj);
+            }).catch((reason) => reject(reason));
+        });
+    }
+
 }
 
 export default InformeService;

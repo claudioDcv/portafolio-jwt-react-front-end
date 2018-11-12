@@ -1,14 +1,17 @@
 // ModalAsignarPrevencionistaInformeDetalle
-/* eslint react/no-multi-comp: 0, react/prop-types: 0 */
-
 import React from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label, Table } from 'reactstrap';
+
+import ModalAgregarRecomendacion from './ModalAgregarRecomendacion';
+
+import InformeService from '../http/service/InformeService';
 
 class ModalPrevencionistaInformes extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       modal: false,
+      observaciones: [],
     };
 
     this.aprobar = this.aprobar.bind(this);
@@ -16,27 +19,39 @@ class ModalPrevencionistaInformes extends React.Component {
     this.cerrar = this.cerrar.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.agregarRecomendacion = this.agregarRecomendacion.bind(this);
   }
 
   toggle() {
 
-    if(!this.state.modal) {
-      alert(this.props.informe.detalle)
+    if (!this.state.modal) {
+      InformeService.observacionByInformeId(this.props.informe.detalle).then(observaciones => {
+        this.setState({ observaciones }, () => {
+          this.setState({
+            modal: !this.state.modal,
+          });
+        });
+      });
+    } else {
+      this.setState({
+        modal: !this.state.modal,
+      });
     }
-    this.setState({
-      modal: !this.state.modal,
-    });
   }
 
   aprobar() {
-    this.setState({
-      modal: false,
+    InformeService.aprobarInformeDetalle(this.props.informe.detalle).then(() => {
+      this.setState({
+        modal: false,
+      });
     });
   }
 
   rechazar() {
-    this.setState({
-      modal: false,
+    InformeService.rechazarInformeDetalle(this.props.informe.detalle).then(() => {
+      this.setState({
+        modal: false,
+      });
     });
   }
 
@@ -51,23 +66,33 @@ class ModalPrevencionistaInformes extends React.Component {
     this.setState({ [name]: value });
   }
 
+  agregarRecomendacion(data, callback) {
+    InformeService.agregarRecomendacionParaObservacionPorPreve(data).then(e => {
+      callback();
+      InformeService.observacionByInformeId(this.props.informe.detalle).then(observaciones => {
+        this.setState({ observaciones });
+      });
+    });
+  }
+
   vistaTrabajador(t) {
     return (
       <div>
-      <ul>
-        <li>Informe Trabajador <strong>{t.nombre} {t.apellidoPaterno} {t.apellidoMaterno}</strong></li>
-      </ul>
-      <h5>Riesgos</h5>
-      <ul>
-        {t.riesgos.map(e => (
-          <li key={e.id}>{e.id}) {e.nombre}</li>
-        ))}
-      </ul>
+        <ul>
+          <li>Informe Trabajador <strong>{t.nombre} {t.apellidoPaterno} {t.apellidoMaterno}</strong></li>
+        </ul>
+        <h5>Riesgos</h5>
+        <ul>
+          {t.riesgos.map(e => (
+            <li key={e.id}>{e.id}) {e.nombre}</li>
+          ))}
+        </ul>
       </div>
     );
   }
 
   render() {
+    const { observaciones } = this.state;
     const { informe } = this.props;
     return (
       <div>
@@ -79,7 +104,26 @@ class ModalPrevencionistaInformes extends React.Component {
             {informe.trabajador && this.vistaTrabajador(informe.trabajador)}
 
             <Label for="exampleSelect">Observaciones</Label>
-
+            <Table striped>
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Titulo</th>
+                  <th>Recomendación</th>
+                </tr>
+              </thead>
+              <tbody>
+                {observaciones.map(e => (
+                  <tr key={e.id}>
+                    <td>{e.id}</td>
+                    <td>{e.nombre}</td>
+                    <td>{e.recomendacion ? e.recomendacion : (
+                      <ModalAgregarRecomendacion observacion={e} buttonLabel="Agregar" agregarRecomendacion={this.agregarRecomendacion} />
+                    )}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.cerrar}>Cerrar</Button>{' '}
