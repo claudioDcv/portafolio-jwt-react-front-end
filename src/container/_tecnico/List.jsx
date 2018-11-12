@@ -137,56 +137,74 @@ class List extends Component {
                   </Row>
                 </CardHeader>
                 <CardBody>
-                  <ButtonGroup className="botones-seleccion-de-listado-informes">
-                    <Button
-                      color={estado === 0 && tipoInforme === 'trabajador' ? 'success' : 'default'}
-                      disabled={(estado === 0 && tipoInforme === 'trabajador')}
-                      onClick={() => this.callInformes(0, 'trabajador')}
-                    >Trabajadores Pendientes</Button>
-                    <Button
-                      color={estado === 1 && tipoInforme === 'trabajador' ? 'success' : 'default'}
-                      disabled={(estado === 1 && tipoInforme === 'trabajador')}
-                      onClick={() => this.callInformes(1, 'trabajador')}
-                    >Trabajadores Ok</Button>
-                    <Button
-                      color={estado === 0 && tipoInforme === 'instalacion' ? 'success' : 'default'}
-                      disabled={(estado === 0 && tipoInforme === 'instalacion')}
-                      onClick={() => this.callInformes(0, 'instalacion')}
-                    >Instalaciones Pendientes</Button>
-                    <Button
-                      color={estado === 1 && tipoInforme === 'instalacion' ? 'success' : 'default'}
-                      disabled={(estado === 1 && tipoInforme === 'instalacion')}
-                      onClick={() => this.callInformes(1, 'instalacion')}
-                    >Instalaciones Ok</Button>
-                    </ButtonGroup>
-                    <Table className="mt-4">
-                      <thead>
-                        <tr>
-                          <th>Id</th>
-                          <th>Nombre</th>
-                          <th>Solicitud de Revisión</th>
-                          <th>Acción</th>
+                  <Row>
+                    <Col md="12" className="botones-seleccion-de-listado-informes">
+                      <Button
+                        className="mr-1"
+                        color={estado === 0 && tipoInforme === 'trabajador' ? 'info' : 'default'}
+                        disabled={(estado === 0 && tipoInforme === 'trabajador')}
+                        onClick={() => this.callInformes(0, 'trabajador')}
+                      >Trabajadores Pendientes</Button>
+                      <Button
+                        className="mr-1"
+                        color={estado === 1 && tipoInforme === 'trabajador' ? 'success' : 'default'}
+                        disabled={(estado === 1 && tipoInforme === 'trabajador')}
+                        onClick={() => this.callInformes(1, 'trabajador')}
+                      >Trabajadores Aprobados</Button>
+                      <Button
+                        color={estado === -1 && tipoInforme === 'trabajador' ? 'danger' : 'default'}
+                        disabled={(estado === -1 && tipoInforme === 'trabajador')}
+                        onClick={() => this.callInformes(-1, 'trabajador')}
+                      >Trabajadores Rechazados</Button>
+                    </Col>
+                    <Col className="mt-2 botones-seleccion-de-listado-informes" md="12">
+                      <Button
+                        className="mr-1"
+                        color={estado === 0 && tipoInforme === 'instalacion' ? 'info' : 'default'}
+                        disabled={(estado === 0 && tipoInforme === 'instalacion')}
+                        onClick={() => this.callInformes(0, 'instalacion')}
+                      >Instalaciones Pendientes</Button>
+                      <Button
+                        className="mr-1"
+                        color={estado === 1 && tipoInforme === 'instalacion' ? 'success' : 'default'}
+                        disabled={(estado === 1 && tipoInforme === 'instalacion')}
+                        onClick={() => this.callInformes(1, 'instalacion')}
+                      >Instalaciones Aprobadas</Button>
+                      <Button
+                        color={estado === -1 && tipoInforme === 'instalacion' ? 'danger' : 'default'}
+                        disabled={(estado === -1 && tipoInforme === 'instalacion')}
+                        onClick={() => this.callInformes(-1, 'instalacion')}
+                      >Instalaciones Rechazadas</Button>
+                    </Col>
+                  </Row>
+                  <Table className="mt-4">
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Solicitud de Revisión</th>
+                        <th>Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {informes.map(e => (
+                        <tr key={e.id}>
+                          <td>{e.id}</td>
+                          <td>{e.nombre}</td>
+                          <td>{e.solicitarRevision && (<Badge color="success">Solicitud Enviada</Badge>)}</td>
+                          <td><Link to={`/home/empresas/${empresa.id}/tecnico/${tipoInforme === 'trabajador' ? 'informe-persona' : 'informe-instalacion'}/${e.id}`}>Ver</Link></td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        {informes.map(e => (
-                          <tr key={e.id}>
-                            <td>{e.id}</td>
-                            <td>{e.nombre}</td>
-                            <td>{e.solicitarRevision && (<Badge color="success">Solicitud Enviada</Badge>)}</td>
-                            <td><Link to={`/home/empresas/${empresa.id}/tecnico/${tipoInforme === 'trabajador' ? 'informe-persona' : 'informe-instalacion'}/${e.id}`}>Ver</Link></td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </Table>
+                      ))}
+                    </tbody>
+                  </Table>
                 </CardBody>
               </Card>
             </Col>
           </Row>
         </Container>
       </div>
-        );
-      }
-    }
-    
-    export default List;
+    );
+  }
+}
+
+export default List;

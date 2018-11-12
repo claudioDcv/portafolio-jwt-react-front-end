@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Row, Col, Breadcrumb, BreadcrumbItem,
+import {
+    Row, Col, Breadcrumb, BreadcrumbItem, Card, CardBody,
     Container, TabContent, TabPane, Nav, NavItem, NavLink,
 } from 'reactstrap';
 
@@ -28,6 +29,7 @@ class MisVisitasMedicas extends Component {
         this.toggle = this.toggle.bind(this);
         this.handlerConfirm = this.handlerConfirm.bind(this);
         this.handlerRefuse = this.handlerRefuse.bind(this);
+        this.handlerShow = this.handlerShow.bind(this);
     }
 
     componentDidMount() {
@@ -53,11 +55,32 @@ class MisVisitasMedicas extends Component {
     }
 
     handlerConfirm(id) {
-        alert(id);
+        const { empresa } = this.state;
+        VisitaMedicaService.aceptarVisitaMedica(id).then(e => {
+            VisitaMedicaService.findByEmpresaIdConfirmacion(empresa.id, 1).then(visitasMedicas => {
+                this.setState({ visitasMedicas: visitasMedicas.map(v => ({
+                    ...v,
+                    activo: v.id === e,
+                })), activeTab: "1" })
+            });
+        });
     }
 
     handlerRefuse(id) {
-        alert(id);
+        const { empresa } = this.state;
+        VisitaMedicaService.rechazarVisitaMedica(id).then(e => {
+            VisitaMedicaService.findByEmpresaIdConfirmacion(empresa.id, -1).then(visitasMedicas => {
+                this.setState({ visitasMedicas: visitasMedicas.map(v => ({
+                    ...v,
+                    activo: v.id === e,
+                })), activeTab: "-1" })
+            });
+        });
+    }
+
+    handlerShow(id) {
+        const { empresa } = this.state;
+        this.props.history.push(`/home/empresas/${empresa.id}/medico/${id}`);
     }
 
     render() {
@@ -85,64 +108,71 @@ class MisVisitasMedicas extends Component {
                     </Row>
                 </Container>
                 <Container>
-                    <Row>
-                        <Col md="12">
-                            <div>
-                                <Nav tabs>
-                                    <NavItem>
-                                        <NavLink className={[
-                                                this.state.activeTab === '0' ? 'active' : '',
-                                                'text-primary',
-                                        ]} onClick={() => { this.toggle('0'); }}>
-                                            Asignadas
+                    <Card className="mt-4">
+                        <CardBody>
+                            <Row>
+                                <Col md="12">
+                                    <div>
+                                        <Nav tabs>
+                                            <NavItem>
+                                                <NavLink className={[
+                                                    this.state.activeTab === '0' ? 'active' : '',
+                                                    'text-primary',
+                                                ].join(' ')} onClick={() => { this.toggle('0'); }}>
+                                                    Asignadas
                                         </NavLink>
-                                    </NavItem>
-                                    <NavItem>
-                                        <NavLink className={[
-                                            this.state.activeTab === '1' ? 'active' : '',
-                                            'text-success',
-                                        ]} onClick={() => { this.toggle('1'); }}>
-                                            Aceptadas
+                                            </NavItem>
+                                            <NavItem>
+                                                <NavLink className={[
+                                                    this.state.activeTab === '1' ? 'active' : '',
+                                                    'text-success',
+                                                ].join(' ')} onClick={() => { this.toggle('1'); }}>
+                                                    Aceptadas
                                         </NavLink>
-                                    </NavItem>
-                                    <NavItem>
-                                        <NavLink className={[
-                                            this.state.activeTab === '-1' ? 'active' : '',
-                                            'text-danger',
-                                        ]} onClick={() => { this.toggle('-1'); }}>
-                                            Rechazadas
+                                            </NavItem>
+                                            <NavItem>
+                                                <NavLink className={[
+                                                    this.state.activeTab === '-1' ? 'active' : '',
+                                                    'text-danger',
+                                                ].join(' ')} onClick={() => { this.toggle('-1'); }}>
+                                                    Rechazadas
                                         </NavLink>
-                                    </NavItem>
-                                </Nav>
-                                <TabContent activeTab={this.state.activeTab}>
-                                    <TabPane tabId="0">
-                                        <Row>
-                                            <Col sm="12">
-                                                <TablaVisitasMedicas
-                                                    visitasMedicas={visitasMedicas}
-                                                    onConfirm={this.handlerConfirm}
-                                                    onRefuse={this.handlerRefuse}
-                                                />
-                                            </Col>
-                                        </Row>
-                                    </TabPane>
-                                    <TabPane tabId="1">
-                                        <Row>
-                                            <Col sm="12">
-                                                <TablaVisitasMedicas visitasMedicas={visitasMedicas} />
-                                            </Col>
-                                        </Row>
-                                    </TabPane>
-                                    <TabPane tabId="-1">
-                                        <Row>
-                                            <Col sm="12">
-                                                <TablaVisitasMedicas visitasMedicas={visitasMedicas} />
-                                            </Col>
-                                        </Row>
-                                    </TabPane>
-                                </TabContent>
-                            </div></Col>
-                    </Row>
+                                            </NavItem>
+                                        </Nav>
+                                        <TabContent activeTab={this.state.activeTab}>
+                                            <TabPane tabId="0">
+                                                <Row>
+                                                    <Col sm="12">
+                                                        <TablaVisitasMedicas
+                                                            visitasMedicas={visitasMedicas}
+                                                            onConfirm={this.handlerConfirm}
+                                                            onRefuse={this.handlerRefuse}
+                                                        />
+                                                    </Col>
+                                                </Row>
+                                            </TabPane>
+                                            <TabPane tabId="1">
+                                                <Row>
+                                                    <Col sm="12">
+                                                        <TablaVisitasMedicas
+                                                            visitasMedicas={visitasMedicas}
+                                                            onShow={this.handlerShow}
+                                                        />
+                                                    </Col>
+                                                </Row>
+                                            </TabPane>
+                                            <TabPane tabId="-1">
+                                                <Row>
+                                                    <Col sm="12">
+                                                        <TablaVisitasMedicas visitasMedicas={visitasMedicas} />
+                                                    </Col>
+                                                </Row>
+                                            </TabPane>
+                                        </TabContent>
+                                    </div></Col>
+                            </Row>
+                        </CardBody>
+                    </Card>
                 </Container>
             </div>
         ) : (<Loading />);

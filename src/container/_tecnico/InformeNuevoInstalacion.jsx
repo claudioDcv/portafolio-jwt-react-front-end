@@ -204,8 +204,9 @@ class InformeNuevo extends Component {
   }
 
   disabled() {
-    const { solicitarRevision, nombre, instalacionSeleccionado, supervisorSeleccionado, tipo, trabajadorSeleccionado } = this.state;
+    const { informeData, solicitarRevision, nombre, instalacionSeleccionado, supervisorSeleccionado, tipo, trabajadorSeleccionado } = this.state;
     if (
+      (informeData && informeData.confirmacionPrevencionista === 1) ||
       solicitarRevision ||
       nombre === '' ||
       (
@@ -316,8 +317,9 @@ class InformeNuevo extends Component {
                         {!id && (<Button color="primary" className="button-form" block disabled={this.disabled()}>
                           <FontAwesomeIcon icon="plus" /> {id ? 'Guardar' : 'Crear'}
                         </Button>)}{' '}
-                        {id && (<Button onClick={this.handlerSolicitarRevision} color="info" className="button-form" block disabled={this.disabled()}>
-                          Solicitar Revisión
+                        {id && (
+                          <Button onClick={this.handlerSolicitarRevision} color="info" className="button-form" block disabled={this.disabled()}>
+                            Solicitar Revisión
                         </Button>)}
                       </Col>
                     </Row>
