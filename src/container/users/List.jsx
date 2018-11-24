@@ -78,15 +78,7 @@ class List extends Component {
                                                             <Button color="primary" size="sm" outline>
                                                                 <FontAwesomeIcon icon="eye" />
                                                             </Button>
-                                                        </Link>{' '}
-                                                        <Button
-                                                            onClick={this.handlerOnDelete(e.id)}
-                                                            color="danger"
-                                                            size="sm"
-                                                            outline 
-                                                        >
-                                                            <FontAwesomeIcon icon="trash" />
-                                                        </Button>
+                                                        </Link>
                                                     </td>
                                                 </tr>
                                             ))}

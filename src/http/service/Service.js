@@ -1,4 +1,5 @@
 import { apiHost } from '../../config/const';
+import download from './donwload';
 
 const getHeadToken = (authenticated) => {
 
@@ -20,6 +21,15 @@ const responseControl = (data, resolve, reject) => {
         }
         reject(data.message)
     }
+}
+
+const fileControl = (data, resolve, reject) => {
+    const url = window.URL.createObjectURL(new Blob([data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `certificado-${(new Date()).getTime()}.pdf`);
+    document.body.appendChild(link);
+    link.click();
 }
 
 class Service {
@@ -125,6 +135,25 @@ class Service {
             })
                 .then((resp) => resp.json())
                 .then((data) => responseControl(data, resolve, reject))
+                .catch((reason) => {
+                    reject(reason);
+                });
+        });
+    }
+
+    static blob(endpoint, data, authenticated = false) {
+        return new Promise((resolve, reject) => {
+
+            fetch(`${apiHost}${endpoint}`, {
+                method: 'POST', // or 'PUT'
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...getHeadToken(authenticated),
+                },
+            })
+                .then((resp) => resp.blob())
+                .then((data) => fileControl(data, resolve, reject))
                 .catch((reason) => {
                     reject(reason);
                 });

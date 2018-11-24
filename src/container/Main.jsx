@@ -32,6 +32,8 @@ import Home from './home/Home';
 
 import ListadoInformesAsignado from './_prevencionista/ListadoInformesAsignado';
 
+import CertificadosHome from './_trabajador/CertificadosHome';
+
 class Main extends Component {
 
   render() {
@@ -39,6 +41,8 @@ class Main extends Component {
       <Router>
         <div>
           <Route exact path="/" component={Login} />
+
+          <Route exact path="/certificados" component={CertificadosHome} />
           <PrivateRoute exact path="/home" component={Home} />
           <PrivateRoute exact path="/usuarios" component={UsersList} />
           <PrivateRoute path="/usuarios/detalle/:id" component={UserSingle} />

@@ -122,7 +122,7 @@ class Single extends Component {
                                                     placeholder="Ingrese Nombre de Usuario"
                                                     value={user.name}
                                                     onChange={this.handlerOnChangeUser}
-                                                    maxLength="50"
+                                                    disabled
                                                 />
                                             </FormGroup>
                                         </Col>
@@ -132,6 +132,7 @@ class Single extends Component {
                                             <FormGroup>
                                                 <Label for="exampleEmail">Email</Label>
                                                 <Input
+                                                    disabled
                                                     type="email"
                                                     name="email"
                                                     id="email"
@@ -142,7 +143,7 @@ class Single extends Component {
                                             </FormGroup>
                                         </Col>
                                     </Row>
-                                    <Button disabled={this.onDisabledButton()} onClick={this.handlerOnClick}>Guardar</Button>
+                                    {/*<Button disabled={this.onDisabledButton()} onClick={this.handlerOnClick}>Guardar</Button>*/}
                                     <div className="mt-4">
                                         <Alert color="danger" isOpen={visible} toggle={this.onDismiss}>
                                             {errorMessage}

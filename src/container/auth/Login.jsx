@@ -6,7 +6,7 @@ import Logo from '../../components/Logo';
 
 import AuthService from '../../http/service/AuthService';
 import UserService from '../../http/service/UserService';
-
+import { Link } from "react-router-dom";
 
 class Login extends Component {
 
@@ -121,6 +121,17 @@ class Login extends Component {
                             </Col>
                         </Row>
                     </Form>
+                    <Row>
+                        <Col md={{ size: 8, offset: 2 }}>
+                            <Card className="mt-4">
+                                <CardBody>
+                                    <Link to="/certificados">
+                                        <Button color="info" size="lg" block>Certificados</Button>
+                                    </Link>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                    </Row>
                 </Container>
             </div>
         );
