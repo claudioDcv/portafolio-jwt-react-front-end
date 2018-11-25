@@ -44,21 +44,21 @@ class VisitaMedica extends Component {
     componentDidMount() {
         const { id, visitaMedicaId } = this.props.match.params;
         EmpresasService.findById(id).then(empresa => {
-        VisitaMedicaService.getVisitaMedicaById(empresa.id, visitaMedicaId).then(visitaMedica => {
-        TrabajadorService.findAllTrabajadoresRiesgoByEmpresaId(empresa.id).then(trabajadores => {
-        VisitaMedicaService.getAllConsultasMedicasByVisitaMedica(visitaMedicaId).then(consultasMedicas => {
-        VisitaMedicaService.getAllExamenes().then(examenes => {
-            this.setState({
-                examenes: examenes.map(e => ({ value: e.id, label: e.nombre })),
-                consultasMedicas,
-                trabajadores: trabajadores.map(e => ({ value: e.id, label: `${e.nombre} ${e.apellidoPaterno} ${e.apellidoMaterno}` })),
-                empresa,
-                visitaMedica,
+            VisitaMedicaService.getVisitaMedicaById(empresa.id, visitaMedicaId).then(visitaMedica => {
+                TrabajadorService.findAllTrabajadoresRiesgoByEmpresaId(empresa.id).then(trabajadores => {
+                    VisitaMedicaService.getAllConsultasMedicasByVisitaMedica(visitaMedicaId).then(consultasMedicas => {
+                        VisitaMedicaService.getAllExamenes().then(examenes => {
+                            this.setState({
+                                examenes: examenes.map(e => ({ value: e.id, label: e.nombre })),
+                                consultasMedicas,
+                                trabajadores: trabajadores.map(e => ({ value: e.id, label: `${e.nombre} ${e.apellidoPaterno} ${e.apellidoMaterno}` })),
+                                empresa,
+                                visitaMedica,
+                            });
+                        });
+                    });
+                });
             });
-        });
-        });
-        });
-        });
         });
     }
 
@@ -75,7 +75,7 @@ class VisitaMedica extends Component {
             visitaMedicaId,
         };
         VisitaMedicaService.crearConsultaMedica(data).then(e => {
-
+            window.location.reload();
         });
     }
 
@@ -141,7 +141,7 @@ class VisitaMedica extends Component {
                                             <Select
                                                 value={trabajadorSeleccionado}
                                                 onChange={(value) => this.handleChange({ target: { value, name: 'trabajadorSeleccionado' } })}
-                                                options={trabajadores}
+                                                options={trabajadores.filter(e => !consultasMedicas.some(a => a.trabajador.id === e.value))}
                                             />
                                         </Col>
                                         <Col md={6}>

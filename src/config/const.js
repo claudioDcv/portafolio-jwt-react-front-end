@@ -9,3 +9,7 @@ export const profile = () => {
     const data = parseJwt(window.localStorage.getItem('token'));
     return data.sub;
 };
+
+export const userExtras = () => {
+    return JSON.parse(window.localStorage.getItem('profile'));
+};

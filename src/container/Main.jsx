@@ -30,7 +30,14 @@ import NuevaCharla from './_supervisor/NuevaCharla';
 import Login from "./auth/Login";
 import Home from './home/Home';
 
+import Instalaciones from './_adminempresa/ListadoInstalaciones';
+import Capacitaciones from './_adminempresa/ListaCapacitacionesProgramadas';
+import VisitasProgramadas from './_adminempresa/ListaVisitasMedicasProgramadas';
+
+
 import ListadoInformesAsignado from './_prevencionista/ListadoInformesAsignado';
+
+import CertificadosHome from './_trabajador/CertificadosHome';
 
 class Main extends Component {
 
@@ -39,11 +46,17 @@ class Main extends Component {
       <Router>
         <div>
           <Route exact path="/" component={Login} />
+
+          <Route exact path="/certificados" component={CertificadosHome} />
           <PrivateRoute exact path="/home" component={Home} />
           <PrivateRoute exact path="/usuarios" component={UsersList} />
           <PrivateRoute path="/usuarios/detalle/:id" component={UserSingle} />
 
           <PrivateRoute exact path="/perfiles" component={ProfilesList} />
+
+          <PrivateRoute exact path="/home/evaluaciones/:id" component={Instalaciones} />
+          <PrivateRoute exact path="/home/capacitaciones/:id" component={Capacitaciones} />
+          <PrivateRoute exact path="/home/visitasprogramadas/:id" component={VisitasProgramadas} />
 
           <PrivateRoute exact path="/home/empresas" component={ListadoEmpresa} />
           <PrivateRoute exact path="/home/empresas/:id" component={DetalleEmpresa} />

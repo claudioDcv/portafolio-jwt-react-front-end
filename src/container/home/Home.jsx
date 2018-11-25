@@ -3,6 +3,7 @@ import { Breadcrumb, BreadcrumbItem, Container, Col, Row, Button } from 'reactst
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Menu from '../../components/Menu';
+import { profile, userExtras } from '../../config/const';
 import { hasProfile, profileList } from '../../common/utils';
 
 const Home = () => (
@@ -20,6 +21,23 @@ const Home = () => (
                     <h2>Home</h2>
                 </Col>
                 <Col md="12">
+
+                    {hasProfile([profileList.ADMIN_EMPRESA]) && (<Link to={`/home/evaluaciones/${userExtras().empresaFk}`}> 
+                        <Button size="lg" color="primary">
+                            <FontAwesomeIcon icon="file-alt" /> Lista Instalaciones
+                        </Button>
+                    </Link>)}
+                    {hasProfile([profileList.ADMIN_EMPRESA]) && (<Link to={`/home/capacitaciones/${userExtras().empresaFk}`}>
+                        <Button className={"mx-2"} size="lg" color="primary">
+                            <FontAwesomeIcon icon="graduation-cap" /> Lista Capacitaciones
+                        </Button>
+                    </Link>)}
+                    {hasProfile([profileList.ADMIN_EMPRESA]) && (<Link to={`/home/visitasprogramadas/${userExtras().empresaFk}`}>
+                        <Button size="lg" color="primary">
+                            <FontAwesomeIcon icon="notes-medical" /> Lista Visitas Medicas Programadas
+                        </Button>
+                    </Link>)}
+
                     {hasProfile(profileList.SAFE_ADMIN_SUPERVISOR) && (<Link to="/usuarios">
                         <Button size="lg" color="primary">
                             <FontAwesomeIcon icon="users" /> Usuarios
