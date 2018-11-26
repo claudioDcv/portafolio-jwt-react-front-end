@@ -98,7 +98,7 @@ class CertificadosHome extends Component {
                 <Row>
                     <Col md={{ size: 8, offset: 2 }}>
                         <Card>
-                            <CardHeader>Docuentos Trabajador</CardHeader>
+                            <CardHeader>Documentos Trabajador</CardHeader>
                             <CardBody>
                                 <div>
                                     <FormGroup>

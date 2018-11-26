@@ -114,6 +114,7 @@ label {
 }
 
 .ananda-date-range-plugin {
+  z-index: 9;
   left: 0;
   right: 0;
   position: absolute;

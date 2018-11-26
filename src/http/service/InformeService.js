@@ -167,6 +167,16 @@ class InformeService {
         });
     }
 
+    static getAllAdminEmpresa(data) {
+       const uri = '/trabajador-admin-empresa';
+       return new Promise((resolve, reject) => {
+        Service.post(`${endpoint}${uri}`, data).then((d) => {
+            const obj = d.obj;
+            resolve(obj);
+        }).catch((reason) => reject(reason));
+    });
+    }
+
 }
 
 export default InformeService;

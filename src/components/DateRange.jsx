@@ -38,7 +38,7 @@ class DateRange extends Component {
                         onChange={(v) => onChange({ target: { name, value: v } })}
                     />
                     <div className="text-left">
-                        <Button onClick={() => {
+                        <Button color="success" onClick={() => {
                             this.handlerChange({ target: { value: false, name: 'isOpen' } });
                         }}>Cerrar</Button>
                     </div>
