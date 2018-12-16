@@ -9,7 +9,7 @@ import Menu from '../../components/Menu';
 import EmpresaCard from '../../components/EmpresaCard';
 import EmpresasService from '../../http/service/EmpresaService';
 
-class InformesTrabajador extends Component {
+class Capacitaciones extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,7 +31,7 @@ class InformesTrabajador extends Component {
     }
 
     getData() {
-        AdminEmpresaService.informesTrabajadorPaginado(this.getSendData()).then(data => {
+        AdminEmpresaService.capacitacionesPaginado(this.getSendData()).then(data => {
             this.setState({
                 data: data.list,
                 totalPage: data.totalPage,
@@ -80,32 +80,35 @@ class InformesTrabajador extends Component {
         });
     }
 
-    getVisualConfirmacion = state => {
+    getVisualState = state => {
         /*
         capacitaciones
-        0 = pendiente
-        1 = confirmado
-        -1 = rechazado
+        0 = por hacer
+        1 = capacitacion cerrada REALIZADA
         */
         if (state === 0) {
-            return (<Badge color="warning" pill>Pendiente</Badge>);
+            return (<Badge color="success" pill>No Realizada</Badge>);
         }
 
         if (state === 1) {
-            return (<Badge color="success" pill>Confirmado</Badge>);
+            return (<Badge color="danger" pill>Realizada</Badge>);
         }
 
-        if (state === -1) {
-            return (<Badge color="danger" pill>Rechazado</Badge>);
-        }
+        return (<Badge color="primary" pill>No Realizada</Badge>);
+    }
 
-        return (<Badge color="warning" pill>Pendiente</Badge>);
+    getFecha = fechaRealizacion => {
+        // se quita un dia para que las del dia de hoy no esten expiradas
+        if (moment().subtract(1, 'day').isAfter(fechaRealizacion)) {
+            return 'Expirada (' + moment(fechaRealizacion).format('DD-MM-YYYY');
+        }
+        return moment(fechaRealizacion).format('DD-MM-YYYY');
     }
 
     render() {
         const translations = { noDataText: 'No existen resultados', pageText: 'Página', ofText: 'de', rowsText: 'Filas', previousText: 'Anterior', nextText: 'Siguiente', loadingText: 'Cargando...' };
         const { date, data, totalPage, empresa } = this.state;
-        return (
+        return(
             <div>
                 <Menu />
                 <Container>
@@ -115,7 +118,7 @@ class InformesTrabajador extends Component {
                                 <BreadcrumbItem>
                                     <Link to="/home">Home</Link>
                                 </BreadcrumbItem>
-                                <BreadcrumbItem active>{empresa.nombre} - Informes Trabajadores</BreadcrumbItem>
+                                <BreadcrumbItem active>{empresa.nombre} - Capacitaciones</BreadcrumbItem>
                             </Breadcrumb>
                             <EmpresaCard empresa={empresa} link={`/home`} />
                         </Col>
@@ -156,21 +159,21 @@ class InformesTrabajador extends Component {
                                     <ReactTable
                                         {...translations}
                                         columns={[
-                                            { Header: "Id", accessor: "id" },
-                                            { Header: "Nombre", accessor: "nombre" },
-                                            {
-                                                Header: "Realizado", id: "fechaRealizacion",
-                                                accessor: d => moment(d.fechaRealizacion).format('DD-MM-YYYY'),
+                                            { Header: "Nombre", id: "nombre",
+                                                accessor: d => `${d.id}) ${d.nombre}`,
+                                            },
+                                            { Header: "Examinador", accessor: "examinador.name",
                                             },
                                             {
-                                                Header: "Trabajador", id: "trabajador.run",
-                                                accessor: d =>  `${d.trabajador.run} ${d.trabajador.nombre} ${d.trabajador.apellidoPaterno} ${d.trabajador.apellidoMaterno}`,
+                                                Header: 'Fecha',
+                                                id: "fechaRealizacion",
+                                                accessor: d => this.getFecha(d.fechaRealizacion),
                                             },
                                             {
-                                                Header: 'Estado Aceptación',
-                                                id: "confirmacionPrevencionista",
-                                                accessor: d => this.getVisualConfirmacion(d.confirmacionPrevencionista),
-                                            },
+                                                Header: 'Estado',
+                                                id: "estado",
+                                                accessor: d => this.getVisualState(d.estado),
+                                            }
                                         ]}
                                         manual // Forces table not to paginate or sort automatically, so we can handle it server-side
                                         data={data}
@@ -184,8 +187,9 @@ class InformesTrabajador extends Component {
                         </CardBody>
                     </Card>
                 </Container>
-            </div>);
+            </div>
+        );
     }
 }
 
-export default InformesTrabajador;
+export default Capacitaciones;

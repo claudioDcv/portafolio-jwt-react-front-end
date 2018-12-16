@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import ReactTable from "react-table";
 import { Link } from "react-router-dom";
-import { Col, Card, Badge, CardBody, FormGroup, Label, Input, Breadcrumb, BreadcrumbItem, Container, Row, CardHeader } from 'reactstrap';
+import { Col, Card, CardBody, Badge, FormGroup, Label, Input, Breadcrumb, BreadcrumbItem, Container, Row, CardHeader } from 'reactstrap';
 
 import AdminEmpresaService from '../../http/service/AdminEmpresaService';
 import Menu from '../../components/Menu';
 import EmpresaCard from '../../components/EmpresaCard';
 import EmpresasService from '../../http/service/EmpresaService';
 
-class InformesTrabajador extends Component {
+class VisitasMedicas extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,7 +31,7 @@ class InformesTrabajador extends Component {
     }
 
     getData() {
-        AdminEmpresaService.informesTrabajadorPaginado(this.getSendData()).then(data => {
+        AdminEmpresaService.visitasMedicasPaginado(this.getSendData()).then(data => {
             this.setState({
                 data: data.list,
                 totalPage: data.totalPage,
@@ -80,7 +80,7 @@ class InformesTrabajador extends Component {
         });
     }
 
-    getVisualConfirmacion = state => {
+    getVisualConfirmacionMedico = state => {
         /*
         capacitaciones
         0 = pendiente
@@ -102,10 +102,18 @@ class InformesTrabajador extends Component {
         return (<Badge color="warning" pill>Pendiente</Badge>);
     }
 
+    getFecha = fechaRealizacion => {
+        // se quita un dia para que las del dia de hoy no esten expiradas
+        if (moment().subtract(1, 'day').isAfter(fechaRealizacion)) {
+            return 'Expirada (' + moment(fechaRealizacion).format('DD-MM-YYYY');
+        }
+        return moment(fechaRealizacion).format('DD-MM-YYYY');
+    }
+
     render() {
         const translations = { noDataText: 'No existen resultados', pageText: 'Página', ofText: 'de', rowsText: 'Filas', previousText: 'Anterior', nextText: 'Siguiente', loadingText: 'Cargando...' };
         const { date, data, totalPage, empresa } = this.state;
-        return (
+        return(
             <div>
                 <Menu />
                 <Container>
@@ -115,7 +123,7 @@ class InformesTrabajador extends Component {
                                 <BreadcrumbItem>
                                     <Link to="/home">Home</Link>
                                 </BreadcrumbItem>
-                                <BreadcrumbItem active>{empresa.nombre} - Informes Trabajadores</BreadcrumbItem>
+                                <BreadcrumbItem active>{empresa.nombre} - Visitas Medicas</BreadcrumbItem>
                             </Breadcrumb>
                             <EmpresaCard empresa={empresa} link={`/home`} />
                         </Col>
@@ -157,19 +165,19 @@ class InformesTrabajador extends Component {
                                         {...translations}
                                         columns={[
                                             { Header: "Id", accessor: "id" },
-                                            { Header: "Nombre", accessor: "nombre" },
-                                            {
-                                                Header: "Realizado", id: "fechaRealizacion",
-                                                accessor: d => moment(d.fechaRealizacion).format('DD-MM-YYYY'),
+                                            { Header: "Supervisor", accessor: "supervisor.name",
+                                            },
+                                            { Header: "Medico", accessor: "medico.name",
                                             },
                                             {
-                                                Header: "Trabajador", id: "trabajador.run",
-                                                accessor: d =>  `${d.trabajador.run} ${d.trabajador.nombre} ${d.trabajador.apellidoPaterno} ${d.trabajador.apellidoMaterno}`,
+                                                Header: 'Fecha',
+                                                id: "fechaRealizacion",
+                                                accessor: d => this.getFecha(d.fechaRealizacion),
                                             },
                                             {
-                                                Header: 'Estado Aceptación',
-                                                id: "confirmacionPrevencionista",
-                                                accessor: d => this.getVisualConfirmacion(d.confirmacionPrevencionista),
+                                                Header: 'Confirmación Medico',
+                                                id: "confirmacionMedico",
+                                                accessor: d => this.getVisualConfirmacionMedico(d.confirmacionMedico),
                                             },
                                         ]}
                                         manual // Forces table not to paginate or sort automatically, so we can handle it server-side
@@ -184,8 +192,9 @@ class InformesTrabajador extends Component {
                         </CardBody>
                     </Card>
                 </Container>
-            </div>);
+            </div>
+        );
     }
 }
 
-export default InformesTrabajador;
+export default VisitasMedicas;

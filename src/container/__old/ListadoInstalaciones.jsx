@@ -28,10 +28,6 @@ class Plant extends Component {
             totalPage: 0,
             pageSize: 10,
         };
-
-        this.r = React.createRef();
-
-
     }
 
     componentDidMount() {

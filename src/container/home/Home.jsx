@@ -22,35 +22,36 @@ const Home = () => (
                 </Col>
                 <Col md="12">
 
-                    {hasProfile([profileList.ADMIN_EMPRESA]) && (<Link to={`/home/evaluaciones/${userExtras().empresaFk}`}> 
+                    {/*hasProfile([profileList.ADMIN_EMPRESA]) && (<Link to={`/home/evaluaciones/${userExtras().empresaFk}`}> 
                         <Button size="lg" color="primary">
                             <FontAwesomeIcon icon="file-alt" /> Lista Instalaciones
                         </Button>
-                    </Link>)}
+                    </Link>)*/}
                     {hasProfile([profileList.ADMIN_EMPRESA]) && (<Link to={`/home/capacitaciones/${userExtras().empresaFk}`}>
-                        <Button className={"mx-2"} size="lg" color="primary">
-                            <FontAwesomeIcon icon="graduation-cap" /> Lista Capacitaciones
+                        <Button className={"mr-2"} size="lg" color="primary">
+                            <FontAwesomeIcon icon="graduation-cap" /> Capacitaciones
                         </Button>
                     </Link>)}
-                    {hasProfile([profileList.ADMIN_EMPRESA]) && (<Link to={`/home/visitasprogramadas/${userExtras().empresaFk}`}>
-                        <Button size="lg" color="primary">
-                            <FontAwesomeIcon icon="notes-medical" /> Lista Visitas Medicas Programadas
+                    {hasProfile([profileList.ADMIN_EMPRESA]) && (<Link to={`/home/visitas/${userExtras().empresaFk}`}>
+                        <Button className={"mx-2"} size="lg" color="primary">
+                            <FontAwesomeIcon icon="notes-medical" /> Visitas Medicas
                         </Button>
                     </Link>)}
 
                     {hasProfile([profileList.ADMIN_EMPRESA]) && (<Link to={`/home/informes/trabajadores/${userExtras().empresaFk}`}>
-                        <Button size="lg" color="primary">
+                        <Button className={"mx-2"} size="lg" color="primary">
                             <FontAwesomeIcon icon="file-alt" /> Informes Trabajadores
                         </Button>
                     </Link>)}
 
                     {hasProfile([profileList.ADMIN_EMPRESA]) && (<Link to={`/home/informes/instalaciones/${userExtras().empresaFk}`}>
-                        <Button size="lg" color="primary">
+                        <Button className={"ml-2"} size="lg" color="primary">
                             <FontAwesomeIcon icon="file-alt" /> Informes Instalaciones
                         </Button>
                     </Link>)}
-
-
+                    
+                    {/****************** FIN ADMIN EMPRES *********************/}
+                    
                     {hasProfile(profileList.SAFE_ADMIN_SUPERVISOR) && (<Link to="/usuarios">
                         <Button size="lg" color="primary">
                             <FontAwesomeIcon icon="users" /> Usuarios

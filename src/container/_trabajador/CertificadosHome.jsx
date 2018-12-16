@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container, Button, Table,
     FormGroup, Label, Input,
     Row, Col, Card, CardBody,
@@ -101,7 +103,10 @@ class CertificadosHome extends Component {
                 <Row>
                     <Col md={{ size: 8, offset: 2 }}>
                         <Card>
-                            <CardHeader>Documentos Trabajador</CardHeader>
+                            <CardHeader>
+                                <Link to="/">
+                                    <Button outline><FontAwesomeIcon icon="arrow-left" /></Button>
+                                </Link> Documentos Trabajador</CardHeader>
                             <CardBody>
                                 <div>
                                     <FormGroup>
@@ -116,7 +121,7 @@ class CertificadosHome extends Component {
                                             options={empresas}
                                         />
                                     </FormGroup>
-                                    <Row>
+                                    <Row style={run && empresaSeleccionada ? ({}) : ({ display: 'none' }) }>
                                         <Col md={4}>
                                             <Button
                                                 block
@@ -148,7 +153,7 @@ class CertificadosHome extends Component {
                     </Col>
                 </Row>
 
-                <Row style={{ display: verTabla === 'certificados' ? 'block' : 'none' }}>
+                <Row style={{ display: (verTabla === 'certificados' && run && empresaSeleccionada) ? 'block' : 'none' }}>
                     <Col md={{ size: 8, offset: 2 }}>
                     <Card className="mt-4">
                         <CardHeader>
@@ -187,7 +192,7 @@ class CertificadosHome extends Component {
                         </Card>
                     </Col>
                 </Row>
-                <Row style={{ display: verTabla === 'consulta' ? 'block' : 'none' }}>
+                <Row style={{ display: (verTabla === 'consulta' && run && empresaSeleccionada) ? 'block' : 'none' }}>
                     <Col md={{ size: 8, offset: 2 }}>
                         <Card className="mt-4">
                             <CardHeader>
