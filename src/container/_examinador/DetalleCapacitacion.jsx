@@ -7,6 +7,8 @@ import CapacitacionService from '../../http/service/CapacitacionService';
 import EmpresaCard from '../../components/EmpresaCard';
 import TabTitle from '../../components/TabTitle';
 
+import { apiHost } from '../../config/const';
+
 class DetalleCapacitacion extends Component {
     constructor(props) {
         super(props);
@@ -16,11 +18,14 @@ class DetalleCapacitacion extends Component {
             activeTab: '0',
             asistentes: [],
             asistentesActuales: 0,
+
+            file: null,
         };
         this.toggle = this.toggle.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.registrarAsistencia = this.registrarAsistencia.bind(this);
         this.handlerCerrarCapacitacion = this.handlerCerrarCapacitacion.bind(this);
+
     }
 
     componentDidMount() {
@@ -60,7 +65,60 @@ class DetalleCapacitacion extends Component {
         this.setState({ [name]: value });
     }
 
+    /*
+    var formData = new FormData();
+
+    formData.append("username", "Groucho");
+    formData.append("accountnum", 123456); // number 123456 is immediately converted to a string "123456"
+
+    // HTML file input, chosen by user
+    formData.append("userfile", fileInputElement.files[0]);
+
+    // JavaScript file-like object
+    var content = '<a id="a"><b id="b">hey!</b></a>'; // the body of the new file...
+    var blob = new Blob([content], { type: "text/xml"});
+
+    formData.append("webmasterfile", blob);
+
+    var request = new XMLHttpRequest();
+    request.open("POST", "http://foo.com/submitform.php");
+    request.send(formData);
+    */
+
+    setFile = (event, id, firmaOriginal) => {
+        const s = this;
+        var data = new FormData();
+        debugger
+        data.append("file", event.target.files[0]);
+        data.append("id", id);
+        data.append("firmaOriginal", firmaOriginal);
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        
+        xhr.addEventListener("readystatechange", function () {
+          if (this.readyState === 4) {
+            console.log(this.responseText);
+            var b = this.responseText.replace('"','').replace('"','')
+            var selectImage = b.split('/').reverse()[0];
+            const asistencia = { id, firmar: selectImage };
+            CapacitacionService.registroAsistencia(asistencia).then(() => s.refrescarLista());
+
+          }
+        });
+        
+        xhr.open("POST", apiHost + "/api/asistencias/uploadFile");
+        // xhr.setRequestHeader("Content-Type", "multipart/form-data");
+        xhr.setRequestHeader("Authorization", `Bearer ${window.localStorage.getItem('token')}`);
+        // xhr.setRequestHeader("cache-control", "no-cache");
+        // xhr.setRequestHeader("Postman-Token", "5a7d99cc-f1fd-4428-b0df-242beca06d2e");
+        
+        xhr.send(data);
+        
+    }
+    
     registrarAsistencia(id) {
+        
         return () => {
             const firmar = prompt("Ingrese Firma");
             const asistencia = { id, firmar };
@@ -135,10 +193,13 @@ class DetalleCapacitacion extends Component {
                                                             <td>{e.apellidoPaterno}</td>
                                                             <td>{e.apellidoMaterno}</td>
                                                             <td>{e.firma ? (
-                                                                <span className="text-success">Firmado</span>
+                                                                <span className="text-success">
+                                                                    <img src={e.firma} height="40" width="40" alt="img"/>
+                                                                    <input id="image-file" type="file" onChange={(event) => this.setFile(event, e.asistenciaId, e.firmaOriginal)} />
+                                                                </span>
                                                             ) : (capacitacion.asistentesMinimos > asistentesActuales
                                                                 ? 'No se puede realizar'
-                                                                : <Button col={2} color="info" onClick={this.registrarAsistencia(e.asistenciaId)}>Firmar</Button>
+                                                                : (<input id="image-file" type="file" onChange={(event) => this.setFile(event, e.asistenciaId, e.firmaOriginal)} />)
                                                                 )
                                                             }</td>
                                                         </tr>
