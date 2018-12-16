@@ -5,7 +5,7 @@ import logoSafe from '../common/logoSafe.png';
 
 const Logo = () => (
     <div className="safe-logo">
-        <img src={logoSafe} />
+        <img src={logoSafe} alt="LOGO" />
     </div>
 );
 

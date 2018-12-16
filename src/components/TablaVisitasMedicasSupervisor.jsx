@@ -1,6 +1,5 @@
 import React from 'react';
-import { Table, Button, Badge } from 'reactstrap';
-import { isFunction } from '../common/utils';
+import { Table, Badge } from 'reactstrap';
 
 const TablaVisitasMedicas = ({ visitasMedicas, onConfirm, onRefuse }) => (
     <Table>

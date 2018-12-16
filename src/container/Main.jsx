@@ -34,10 +34,13 @@ import Instalaciones from './_adminempresa/ListadoInstalaciones';
 import Capacitaciones from './_adminempresa/ListaCapacitacionesProgramadas';
 import VisitasProgramadas from './_adminempresa/ListaVisitasMedicasProgramadas';
 
-
 import ListadoInformesAsignado from './_prevencionista/ListadoInformesAsignado';
 
 import CertificadosHome from './_trabajador/CertificadosHome';
+
+// home/informes/trabajador/4
+import InformesTrabajador from './_adminempresa/InformesTrabajador';
+import InformesInstalaciones from './_adminempresa/InformesInstalaciones';
 
 class Main extends Component {
 
@@ -81,6 +84,10 @@ class Main extends Component {
           <PrivateRoute exact path="/home/empresas/:id/tecnico/informe-persona/:informeId" component={InformeNuevoInstalacion} />
 
           <PrivateRoute exact path="/home/empresas/:id/prevencionista" component={ListadoInformesAsignado} />
+        
+          <PrivateRoute exact path="/home/informes/trabajadores/:id" component={InformesTrabajador} />
+          <PrivateRoute exact path="/home/informes/instalaciones/:id" component={InformesInstalaciones} />
+
         </div>
       </Router>);
   }

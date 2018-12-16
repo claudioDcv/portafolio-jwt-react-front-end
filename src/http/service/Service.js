@@ -1,5 +1,4 @@
 import { apiHost } from '../../config/const';
-import download from './donwload';
 
 const getHeadToken = (authenticated) => {
 

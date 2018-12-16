@@ -2,34 +2,25 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import {
   FormGroup,
-  Form,
-  CardHeader,
   BreadcrumbItem,
   Container,
   Breadcrumb,
   Card,
-  CardTitle,
   Label,
   Row,
   Col,
   Button,
-  Input,
-  Table,
   CardBody
 } from "reactstrap";
 import Select from 'react-select';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Menu from "../../components/Menu";
 import DatePicker from 'react-datepicker';
 import moment from "moment";
 
-import { hasProfile, profileList, getUser } from '../../common/utils';
+import { profileList, getUser } from '../../common/utils';
 import UserService from '../../http/service/UserService';
 import VisitaMedicaService from '../../http/service/VisitaMedicaService';
-import EmpresaService from '../../http/service/EmpresaService';
 import EmpresasService from '../../http/service/EmpresaService';
-import InformeService from '../../http/service/InformeService';
-import CapacitacionService from '../../http/service/CapacitacionService';
 import EmpresaCard from '../../components/EmpresaCard';
 
 /*

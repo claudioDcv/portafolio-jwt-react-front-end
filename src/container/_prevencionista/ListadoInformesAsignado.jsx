@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Button, ButtonGroup, Row, Col, Breadcrumb, BreadcrumbItem, Container, Card, CardHeader, CardTitle, CardBody, Table } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Row, Col, Breadcrumb, BreadcrumbItem, Container, Card, CardHeader, CardTitle, CardBody, Table } from 'reactstrap';
 
-import ReactTable from "react-table";
 import "react-table/react-table.css";
 
 import ModalPrevencionistaInformes from '../../components/ModalPrevencionistaInformes';

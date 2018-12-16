@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import {
-    Button, ButtonGroup, Row, Col,
+    Button, Row, Col,
     Breadcrumb, BreadcrumbItem, Container,
     Card, CardBody, CardHeader, Label, Table
 } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import ReactTable from "react-table";
 import "react-table/react-table.css";
 
 import Select from 'react-select';

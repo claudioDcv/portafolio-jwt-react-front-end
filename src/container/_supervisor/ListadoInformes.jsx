@@ -15,7 +15,6 @@ import {
   Row,
   Col
 } from "reactstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Menu from "../../components/Menu";
 

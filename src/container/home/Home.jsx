@@ -3,7 +3,7 @@ import { Breadcrumb, BreadcrumbItem, Container, Col, Row, Button } from 'reactst
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Menu from '../../components/Menu';
-import { profile, userExtras } from '../../config/const';
+import { userExtras } from '../../config/const';
 import { hasProfile, profileList } from '../../common/utils';
 
 const Home = () => (
@@ -37,6 +37,19 @@ const Home = () => (
                             <FontAwesomeIcon icon="notes-medical" /> Lista Visitas Medicas Programadas
                         </Button>
                     </Link>)}
+
+                    {hasProfile([profileList.ADMIN_EMPRESA]) && (<Link to={`/home/informes/trabajadores/${userExtras().empresaFk}`}>
+                        <Button size="lg" color="primary">
+                            <FontAwesomeIcon icon="file-alt" /> Informes Trabajadores
+                        </Button>
+                    </Link>)}
+
+                    {hasProfile([profileList.ADMIN_EMPRESA]) && (<Link to={`/home/informes/instalaciones/${userExtras().empresaFk}`}>
+                        <Button size="lg" color="primary">
+                            <FontAwesomeIcon icon="file-alt" /> Informes Instalaciones
+                        </Button>
+                    </Link>)}
+
 
                     {hasProfile(profileList.SAFE_ADMIN_SUPERVISOR) && (<Link to="/usuarios">
                         <Button size="lg" color="primary">

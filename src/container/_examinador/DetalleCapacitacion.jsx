@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Table, CardBody, CardHeader, Row, Label, Col, Breadcrumb, BreadcrumbItem, Container, TabContent, TabPane, Nav, Card, Button } from 'reactstrap';
+import { Table, CardBody, CardHeader, Row, Label,
+    Col, Breadcrumb, BreadcrumbItem, Container,
+    TabContent, TabPane, Nav, Card, Button } from 'reactstrap';
 import Menu from '../../components/Menu';
 import CapacitacionService from '../../http/service/CapacitacionService';
 
@@ -65,30 +67,9 @@ class DetalleCapacitacion extends Component {
         this.setState({ [name]: value });
     }
 
-    /*
-    var formData = new FormData();
-
-    formData.append("username", "Groucho");
-    formData.append("accountnum", 123456); // number 123456 is immediately converted to a string "123456"
-
-    // HTML file input, chosen by user
-    formData.append("userfile", fileInputElement.files[0]);
-
-    // JavaScript file-like object
-    var content = '<a id="a"><b id="b">hey!</b></a>'; // the body of the new file...
-    var blob = new Blob([content], { type: "text/xml"});
-
-    formData.append("webmasterfile", blob);
-
-    var request = new XMLHttpRequest();
-    request.open("POST", "http://foo.com/submitform.php");
-    request.send(formData);
-    */
-
     setFile = (event, id, firmaOriginal) => {
         const s = this;
         var data = new FormData();
-        debugger
         data.append("file", event.target.files[0]);
         data.append("id", id);
         data.append("firmaOriginal", firmaOriginal);
@@ -98,7 +79,6 @@ class DetalleCapacitacion extends Component {
         
         xhr.addEventListener("readystatechange", function () {
           if (this.readyState === 4) {
-            console.log(this.responseText);
             var b = this.responseText.replace('"','').replace('"','')
             var selectImage = b.split('/').reverse()[0];
             const asistencia = { id, firmar: selectImage };
@@ -106,15 +86,10 @@ class DetalleCapacitacion extends Component {
 
           }
         });
-        
+
         xhr.open("POST", apiHost + "/api/asistencias/uploadFile");
-        // xhr.setRequestHeader("Content-Type", "multipart/form-data");
         xhr.setRequestHeader("Authorization", `Bearer ${window.localStorage.getItem('token')}`);
-        // xhr.setRequestHeader("cache-control", "no-cache");
-        // xhr.setRequestHeader("Postman-Token", "5a7d99cc-f1fd-4428-b0df-242beca06d2e");
-        
         xhr.send(data);
-        
     }
     
     registrarAsistencia(id) {

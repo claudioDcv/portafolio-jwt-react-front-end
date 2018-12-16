@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Label, Table, Input, FormGroup } from 'reactstrap';
+import { Button, Modal, ModalHeader,
+  ModalBody, ModalFooter, Label,
+  Input, FormGroup } from 'reactstrap';
 
 class ModalAgregarRecomendacion extends Component {
     constructor(props) {

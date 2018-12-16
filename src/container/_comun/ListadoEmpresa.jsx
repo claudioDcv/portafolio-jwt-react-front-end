@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Menu from '../../components/Menu';
 
 import EmpresasService from '../../http/service/EmpresaService';
-import { hasProfile, profileList } from '../../common/utils';
 
 class ListadoEmpresa extends Component {
 

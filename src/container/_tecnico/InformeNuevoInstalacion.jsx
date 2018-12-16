@@ -218,11 +218,11 @@ class InformeNuevo extends Component {
   }
 
   handlerSave(nombre) {
-    const { id, detalle } = this.state;
+    const { detalle } = this.state;
     InformeService.insertObservacion({
       nombre,
       informeId: detalle,
-    }).then(data => {
+    }).then(() => {
       InformeService.observacionByInformeId(detalle).then(observaciones => {
         this.setState({
           observaciones,
@@ -237,7 +237,7 @@ class InformeNuevo extends Component {
   }
 
   render() {
-    const { informeData, tipo, trabajadorSeleccionado, trabajadores, observaciones, nombre, supervisores, instalaciones, instalacionSeleccionado, empresa, supervisorSeleccionado, fechaRealizacion, id } = this.state;
+    const { tipo, trabajadorSeleccionado, trabajadores, observaciones, nombre, supervisores, instalaciones, instalacionSeleccionado, empresa, supervisorSeleccionado, fechaRealizacion, id } = this.state;
     return (
       <div>
         <Menu />

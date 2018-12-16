@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Button, Table, FormGroup, Label, Input, Row, Col, Alert, Card, CardBody, CardHeader, CardTitle } from 'reactstrap';
+import { Container, Button, Table,
+    FormGroup, Label, Input,
+    Row, Col, Card, CardBody,
+    CardHeader } from 'reactstrap';
 import Select from 'react-select';
 import { fechaFormateada } from '../../common/utils';
 
