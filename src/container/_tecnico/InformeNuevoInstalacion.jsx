@@ -262,7 +262,7 @@ class InformeNuevo extends Component {
               <EmpresaCard empresa={empresa} />
               <Card className="mt-4">
                 <CardHeader>
-                  <CardTitle>Nuevo Informe | Instalación {id}</CardTitle>
+                  <CardTitle>Nuevo Informe | {tipo === 'informe-instalacion' ? 'Instalación' : 'Trabajador'} {id}</CardTitle>
                   <Form onSubmit={this.handlerSubmit}>
                     <Row>
                       <Col md={12}>
@@ -355,7 +355,7 @@ class InformeNuevo extends Component {
                           <td>{e.recomendacion} {hasProfile(
                             [profileList.PREVENCIONISTA]) && (<Button color="info">Editar</Button>
                             )}</td>
-                          <td className="text-right"><Button color="danger">Eliminar</Button></td>
+                          <td className="text-right" />
                         </tr>
                       ))}
                     </tbody>

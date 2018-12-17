@@ -124,7 +124,7 @@ class List extends Component {
                     <Col>
                       <Link to={`/home/empresas/${empresa.id}/tecnico/informe-persona`} className="mr-2">
                         <Button color="primary">
-                          <FontAwesomeIcon icon="plus" /> Informe Personas
+                          <FontAwesomeIcon icon="plus" /> Informe Trabajador
                         </Button>
                       </Link>
                       <Link to={`/home/empresas/${empresa.id}/tecnico/informe-instalacion`} id="TooltipInstall">
