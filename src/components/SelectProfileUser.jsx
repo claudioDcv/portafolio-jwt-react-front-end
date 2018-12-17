@@ -2,6 +2,17 @@ import React from 'react';
 import { Badge } from 'reactstrap';
 // import Select from 'react-select';
 
+function removeDuplicates(arr){
+    let unique_array = []
+    for(let i = 0;i < arr.length; i++){
+        if(unique_array.indexOf(arr[i]) === -1){
+            unique_array.push(arr[i])
+        }
+    }
+    return unique_array
+}
+
+
 class App extends React.Component {
     state = {
         selectedOption: null,
@@ -19,9 +30,9 @@ class App extends React.Component {
 
         return (
             <div>
-                {optionProfiles.map(e => (
+                {removeDuplicates(optionProfiles.map(e => e.label)).map((e, i) => (
                 <Badge key={e.value} color="success" className="badge-perfil">
-                    {e.label}
+                    {e}
                 </Badge>))}
             </div>
         );
