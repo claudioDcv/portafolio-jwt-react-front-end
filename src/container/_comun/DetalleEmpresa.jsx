@@ -85,14 +85,14 @@ class DetalleEmpresa extends Component {
                                         Header: "Nombre",
                                         accessor: "nombre",
                                         filterMethod: (filter, row) => {
-                                            return row[filter.id].includes(filter.value);
+                                            return `${row[filter.id]}`.includes(filter.value);
                                         }
                                     },
                                     {
                                         Header: "Apellido Paterno",
                                         accessor: "apellidoPaterno",
                                         filterMethod: (filter, row) => {
-                                            return row[filter.id].includes(filter.value);
+                                            return `${row[filter.id]}`.includes(filter.value);
                                         }
                                     },
                                     {
@@ -100,7 +100,7 @@ class DetalleEmpresa extends Component {
                                         id: "apellidoMaterno",
                                         accessor: d => d.apellidoMaterno,
                                         filterMethod: (filter, row) => {
-                                            return row[filter.id].includes(filter.value);
+                                            return `${row[filter.id]}`.includes(filter.value);
                                         }
                                     },
                                 ]}
